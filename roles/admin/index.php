@@ -24,7 +24,6 @@ $total = $conteo->fetchColumn();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/index.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
  
 </head>
@@ -80,11 +79,11 @@ $total = $conteo->fetchColumn();
         $propiedades->execute();
         $propiedades = $propiedades->fetchAll(PDO::FETCH_ASSOC);
 
-        $distritos = $con->prepare("SELECT d.nom_distrito, COUNT(p.id_lugar) AS total_propiedades FROM distrito d 
+        $distritos = $con->prepare("SELECT d.id_distrito, d.nom_distrito, COUNT(p.id_lugar) AS total_propiedades FROM distrito d 
         LEFT JOIN propiedades p ON d.id_distrito = p.id_distrito GROUP BY d.id_distrito, d.nom_distrito ORDER BY d.nom_distrito");
         $distritos->execute();
         $distritos = $distritos->fetchAll(PDO::FETCH_ASSOC);
-         
+        $_SESSION['distritos'] = $distritos;
     ?>
 
 <script>

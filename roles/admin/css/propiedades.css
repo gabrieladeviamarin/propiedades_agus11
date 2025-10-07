@@ -42,8 +42,8 @@
 
 .filtros {
     display: grid;
-    grid-template-columns: 40% 20%;
-    gap: 10px;
+    grid-template-columns: 40% 20% 10%;
+    gap: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -59,6 +59,12 @@
 .filtros input:focus,
 .filtros select:focus {
     border-color: #167a93;
+}
+
+.btn_all {
+    background-color: #167a93 !important;
+    color: white !important;
+    border: none !important;
 }
 
 .tabla {
@@ -111,10 +117,16 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     transition: opacity 0.3s, transform 0.3s;
     display: none;
-    /* Oculto por defecto */
 }
 
 .btn_top:hover {
     background-color: #14434f;
     transform: scale(1.1);
+}
+
+.escritura,
+.contrato,
+.escritura_file,
+.contrato_file {
+    display: none !important;
 }
