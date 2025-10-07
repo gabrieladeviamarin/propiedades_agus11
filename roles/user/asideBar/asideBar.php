@@ -1,0 +1,89 @@
+<?php
+require_once(__DIR__ . '/../../../database/database.php');
+$conexion = new database;
+$con = $conexion->conectar();
+
+// $codigo = $_SESSION['documento'];
+// $nombre = explode(" ", $_SESSION['nombre'])[0];
+// $rol =$_SESSION['rol_name'];
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+<body>
+
+    <button class="menu_iconos_burguer"  id="abrir"><i class="bi bi-list"></i></button>
+
+    <aside id="barraLateral" class="fuera">
+        <div class="Logo">
+            <img src="../../assets/img/LogoFR.webp" class="logoSenaFast" alt="Logo">
+            <h3 style="color: white;" class="senaP">SenaFast</h3>
+        </div>
+
+        <hr class="white">
+
+        <a href="./index.php"> <div class="seccion" id="seccion">
+         <img class="icono" src="asideBar/icons/home.png" alt="home">
+            <p class="seccionTexto">Inicio</p>
+        </div></a>
+
+        <a href="./objetos_index.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/objetos.png" alt="">
+            <p class="seccionTexto">Objetos</p>
+        </div></a>
+
+        <a href="./vehiculos.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/carroBlanco.png" alt="">
+            <p class="seccionTexto">Vehiculos</p>
+        </div></a>
+
+        <a href="./usuarios.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/usuarioBlanco.png" alt="">
+            <p class="seccionTexto">Usuarios</p>
+        </div></a>
+
+
+        <a href="./scanner.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/escanearBlanco.png" alt="">
+            <p class="seccionTexto">Escanear</p>
+        </div></a>
+
+        <a href="./datos.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/datos.png" alt="">
+            <p class="seccionTexto">Datos</p>
+        </div></a>
+
+        <hr class="white">
+
+        <a href="./notificaciones.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/notificaciones.png" alt="">
+            <p class="seccionTexto">Notificaciones</p>
+        </div></a>
+
+        <a href="./configuracion.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/configuraciones.png" alt="">
+            <p class="seccionTexto">Configuraciones</p>
+        </div></a>
+
+        <a href="../../includes/sesion_destroy.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/Salir.png" alt="">
+            <p class="seccionTexto">Salir</p>
+        </div></a>
+
+     
+
+
+
+
+
+    </aside>
+    <script src="./asideBar/script.js"></script>
+</body>
+</html>

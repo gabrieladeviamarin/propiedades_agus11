@@ -1,0 +1,129 @@
+.fuera {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: 0.5s;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+aside {
+    height: clamp(600px, 100%, 100%);
+    border-top-right-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+    background-color: #167a93;
+    width: 81px;
+    transition: 0.5s;
+}
+
+.Logo {
+    margin-top: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: clamp(60px, 100%, 280px);
+}
+
+hr {
+    margin-top: 20px;
+    width: 90%;
+    justify-self: center;
+    border: 1px solid black;
+}
+
+.white {
+    border: 1px solid white;
+}
+
+.white2 {
+    margin-top: 25vh;
+    border: 1px solid white;
+}
+
+.logoIgl {
+    width: 60px;
+    height: 60px;
+}
+
+.seccion {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-left: 15px;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    transition: 1.0s;
+}
+
+.icono {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    transition: 1s;
+}
+
+.seccionTexto {
+    color: white;
+    font-weight: 600;
+    visibility: hidden;
+    display: none;
+    transition: 0.5s;
+}
+
+.menu_iconos_burguer {
+    display: none;
+}
+
+@media (min-width:320px) and (max-width:768px) {
+    aside {
+        overflow: auto;
+        position: fixed;
+        z-index: 1000;
+        background-color: unset;
+    }
+    .fuera {
+        opacity: 0%;
+        transform: translateX(-200px);
+        visibility: hidden;
+    }
+    .dentro {
+        opacity: 100%;
+        transform: translateX(0px);
+        visibility: visible;
+    }
+    .menu_iconos_burguer {
+        display: block;
+        border: 0;
+        right: 48px;
+        top: 10px;
+        font-size: 2.5rem;
+        background-color: transparent;
+        cursor: pointer;
+        color: #167a93;
+        position: absolute;
+        z-index: 1011;
+        visibility: visible;
+    }
+    .logoIgl {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) {
+    .seccion:hover {
+        background-color: #1c8ca8;
+        border-radius: 5px;
+        padding-left: 10px;
+        transition: 0.5s;
+    }
+    aside:hover {
+        min-width: 100px;
+        width: 180px;
+        transition: 0.5s;
+    }
+}
