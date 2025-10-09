@@ -83,7 +83,6 @@ $total = $conteo->fetchColumn();
         LEFT JOIN propiedades p ON d.id_distrito = p.id_distrito GROUP BY d.id_distrito, d.nom_distrito ORDER BY d.nom_distrito");
         $distritos->execute();
         $distritos = $distritos->fetchAll(PDO::FETCH_ASSOC);
-        $_SESSION['distritos'] = $distritos;
     ?>
 
 <script>

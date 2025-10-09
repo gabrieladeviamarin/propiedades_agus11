@@ -35,7 +35,7 @@ validarSesionRol($rol,1);
             <p class="seccionTexto">Inicio</p>
         </div></a>
 
-        <a href="./objetos_index.php"> <div class="seccion">
+        <a href="./distritos.php"> <div class="seccion">
             <img class="icono" src="asideBar/icons/distritos.png" alt="">
             <p class="seccionTexto">Distritos</p>
         </div></a>
@@ -45,10 +45,15 @@ validarSesionRol($rol,1);
             <p class="seccionTexto">Propiedades</p>
         </div></a>
 
-        <a href="./vehiculos.php"> <div class="seccion">
+        <a href="./usuarios.php"> <div class="seccion">
             <img class="icono" src="asideBar/icons/usuarioBlanco.png" alt="">
             <p class="seccionTexto">Usuarios</p>
         </div></a>
+        <a href="./documentos.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/documento.png" alt="">
+            <p class="seccionTexto">Documentos</p>
+        </div></a>
+
         <a href="./informes.php"> <div class="seccion">
             <img class="icono" src="asideBar/icons/informe.png" alt="">
             <p class="seccionTexto">Informes</p>
