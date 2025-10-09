@@ -4,9 +4,9 @@ require_once('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
-$propiedades = $con->prepare("SELECT p.cod_lugar, p.nom_lugar, p.direccion, t.nom_tipo, d.nom_distrito FROM propiedades p
+$propiedades = $con->prepare("SELECT p.cod_lugar, p.nom_lugar, p.direccion, t.nom_tipo, d.nom_distrito   FROM propiedades p
                                 INNER JOIN tipo_propiedad t ON p.id_tip_prop = t.id_tip_prop 
-                                INNER JOIN distrito d ON p.id_distrito = d.id_distrito WHERE id_estado = 1 ORDER BY cod_lugar ASC ;");
+                                INNER JOIN distrito d ON p.id_distrito = d.id_distrito WHERE p.id_estado = 1 ORDER BY cod_lugar ASC ;");
 $propiedades->execute();
 $propiedades = $propiedades->fetchAll(PDO::FETCH_ASSOC);
 
@@ -106,114 +106,114 @@ if(isset($_POST['delete'])){
             <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="Titulo" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="Titulo">Crear Propiedad</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                        <div class="modal-body">
+                          <form action="agg_propiedad.php" id="agg" method="post" enctype="multipart/form-data">
+                              <div class="mb-3">
+                                  <label for="codigo" class="form-label">Codigo</label>
+                                  <input type="text" class="form-control" id="codigo" name="codigo">
+                              </div>
+                              <div class="mb-3">
+                                  <label for="nombre" class="form-label">Nombre</label>
+                                  <input type="text" class="form-control" id="nombre" name="nombre" >
+                              </div>
+                              <div class="mb-3">
+                                  <label for="direccion" class="form-label">Direccion</label>
+                                  <input type="text" class="form-control" id="direccion" name="direccion" >
+                              </div>
+                              <div class="mb-3">
+                                      <label for="distrito" class="form-label">Distrito</label>
+                                      <select class="form-select" id="distrito" name="distrito" > 
+                                          <option value="">---  Seleccione un distrito  ---</option>
+                                          <?php foreach($distritos as $distrito):?>
+                                              <option value="<?php echo $distrito['id_distrito']?>"><?php echo $distrito['nom_distrito']?></option>
+                                          <?php endforeach;?>
+                                      </select>
+                              </div>
+                              <div class="mb-3">
+                                  <label for="tipo" class="form-label">Tipo</label>
+                                  <select class="form-select" id="tipo" name="tipo" > 
+                                      <option value="">---  Seleccione un tipo  ---</option>
+                                      <?php foreach($tipo as $tipos):?>
+                                          <option value="<?php echo $tipos['id_tip_prop']?>"><?php echo $tipos['nom_tipo']?></option>
+                                      <?php endforeach;?>
+                                  </select>
+                              </div>  
+                              <div class="mb-3">
+                                  <label for="observacion" class="form-label">Observaciones de la propiedad</label>
+                                  <textarea class="form-control" id="observacion" name="observacion" rows="3" placeholder="*** No es obligatorio este campo ***"></textarea>
+                              </div>
+<!----------------      ------------------------------ SI ESCRITURA ------------------------------------------------>
+                              <div class="mb-3 escritura">
+                                  <label for="nro_matricula" class="form-label">Numero de Matricula</label>
+                                  <input type="number" class="form-control" id="nro_matricula" name="nro_matricula" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="ficha_catastral" class="form-label">Ficha Catastral</label>
+                                  <input type="text" class="form-control" id="ficha_catastral" name="ficha_catastral" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="valor_escritura" class="form-label">Valor</label>
+                                  <input type="number" min="0" class="form-control" id="valor_escritura" name="valor_escritura" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="fecha_registro" class="form-label">Fecha de Registro</label>
+                                  <input type="date" class="form-control" id="fecha_registro" name="fecha_registro" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="escr" class="form-label">¿Posee la escritura?</label>
+                                  <div>
+                                      <div class="form-check-inline">
+                                          <input class="form-check-input" type="radio" name="opcion" id="si" value="1">
+                                          <label class="form-check-label" for="1">Si</label>
+                                      </div>
+                                      <div class="form-check-inline">
+                                          <input class="form-check-input" type="radio" name="opcion" id="no" value="2">
+                                          <label class="form-check-label" for="2">No</label>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="mb-3 escritura_file">
+                                  <label for="escritura" class="form-label">Subir Documento Escaneado</label>
+                                  <input type="file" class="form-control" id="escritura" name="escritura" accept=".pdf">
+                              </div>
 
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="Titulo">Crear Propiedad</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-
-                  <div class="modal-body">
-                    <form action="agg_propiedad.php" id="agg" method="post" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label for="codigo" class="form-label">Codigo</label>
-                            <input type="text" class="form-control" id="codigo" name="codigo">
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" >
+<!----------------      ------- ----------------------- SI CONTRATO ------------------------------------------------>
+                              <div class="mb-3 contrato">
+                                  <label for="nro_contrato" class="form-label">Numero de Contrato</label>
+                                  <input type="number" class="form-control" id="nro_contrato" name="nro_contrato">
+                              </div> 
+                              <div class="mb-3 contrato">
+                                  <label for="valor_contrato" class="form-label">Valor</label>
+                                  <input type="numer" min="0" class="form-control" id="valor_contrato" name="valor_contrato">
+                              </div> 
+                              <div class="mb-3 contrato">
+                                  <label for="cont" class="form-label">¿Posee el contrato?</label>
+                                  <div>
+                                      <div class="form-check-inline">
+                                          <input class="form-check-input" type="radio" name="opcion2" id="si2" value="1">
+                                          <label class="form-check-label" for="1">Si</label>
+                                      </div>
+                                      <div class="form-check-inline">
+                                          <input class="form-check-input" type="radio" name="opcion2" id="no2" value="2">
+                                          <label class="form-check-label" for="2">No</label>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="mb-3 contrato_file">
+                                  <label for="contrato" class="form-label">Subir Documento Escaneado</label>
+                                  <input type="file" class="form-control" id="contrato" name="contrato" accept=".pdf">
+                              </div>  
                         </div>
-                        <div class="mb-3">
-                            <label for="direccion" class="form-label">Direccion</label>
-                            <input type="text" class="form-control" id="direccion" name="direccion" >
-                        </div>
-                        <div class="mb-3">
-                                <label for="distrito" class="form-label">Distrito</label>
-                                <select class="form-select" id="distrito" name="distrito" > 
-                                    <option value="">---  Seleccione un distrito  ---</option>
-                                    <?php foreach($distritos as $distrito):?>
-                                        <option value="<?php echo $distrito['id_distrito']?>"><?php echo $distrito['nom_distrito']?></option>
-                                    <?php endforeach;?>
-                                </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tipo" class="form-label">Tipo</label>
-                            <select class="form-select" id="tipo" name="tipo" > 
-                                <option value="">---  Seleccione un tipo  ---</option>
-                                <?php foreach($tipo as $tipos):?>
-                                    <option value="<?php echo $tipos['id_tip_prop']?>"><?php echo $tipos['nom_tipo']?></option>
-                                <?php endforeach;?>
-                            </select>
-                        </div>  
-                        <div class="mb-3">
-                            <label for="observacion" class="form-label">Observaciones de la propiedad</label>
-                            <textarea class="form-control" id="observacion" name="observacion" rows="3" placeholder="*** No es obligatorio este campo ***"></textarea>
-                        </div>
-<!---------------------------------------------- SI ESCRITURA ------------------------------------------------>
-                        <div class="mb-3 escritura">
-                            <label for="nro_matricula" class="form-label">Numero de Matricula</label>
-                            <input type="number" class="form-control" id="nro_matricula" name="nro_matricula" >
-                        </div>
-                        <div class="mb-3 escritura">
-                            <label for="ficha_catastral" class="form-label">Ficha Catastral</label>
-                            <input type="text" class="form-control" id="ficha_catastral" name="ficha_catastral" >
-                        </div>
-                        <div class="mb-3 escritura">
-                            <label for="valor_escritura" class="form-label">Valor</label>
-                            <input type="number" min="0" class="form-control" id="valor_escritura" name="valor_escritura" >
-                        </div>
-                        <div class="mb-3 escritura">
-                            <label for="fecha_registro" class="form-label">Fecha de Registro</label>
-                            <input type="date" class="form-control" id="fecha_registro" name="fecha_registro" >
-                        </div>
-                        <div class="mb-3 escritura">
-                            <label for="escr" class="form-label">¿Posee la escritura?</label>
-                            <div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="opcion" id="si" value="1">
-                                    <label class="form-check-label" for="1">Si</label>
-                                </div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="opcion" id="no" value="2">
-                                    <label class="form-check-label" for="2">No</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 escritura_file">
-                            <label for="escritura" class="form-label">Subir Documento Escaneado</label>
-                            <input type="file" class="form-control" id="escritura" name="escritura" accept=".pdf">
-                        </div>
-
-<!----------------------- ----------------------- SI CONTRATO ------------------------------------------------>
-                        <div class="mb-3 contrato">
-                            <label for="nro_contrato" class="form-label">Numero de Contrato</label>
-                            <input type="number" class="form-control" id="nro_contrato" name="nro_contrato">
-                        </div> 
-                        <div class="mb-3 contrato">
-                            <label for="valor_contrato" class="form-label">Valor</label>
-                            <input type="numer" min="0" class="form-control" id="valor_contrato" name="valor_contrato">
-                        </div> 
-                        <div class="mb-3 contrato">
-                            <label for="cont" class="form-label">¿Posee el contrato?</label>
-                            <div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="opcion2" id="si2" value="1">
-                                    <label class="form-check-label" for="1">Si</label>
-                                </div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="opcion2" id="no2" value="2">
-                                    <label class="form-check-label" for="2">No</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 contrato_file">
-                            <label for="contrato" class="form-label">Subir Documento Escaneado</label>
-                            <input type="file" class="form-control" id="contrato" name="contrato" accept=".pdf">
-                        </div>  
-                  </div>
                                 
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn_cancelar" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" name="submit" class="btn btn_all">Crear Propiedad</button>
                   </div>
+                  </form>
 
                 </div>
               </div>
