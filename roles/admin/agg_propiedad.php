@@ -48,7 +48,12 @@ if (isset($_POST['submit'])){
 
         $nro_matricula = $_POST['nro_matricula'];
         $ficha_catastral = $_POST['ficha_catastral'];
+        $codigo = $_POST['codigo_contable'];
         $v_escritura = $_POST['valor_escritura'];
+        $v_contable_l = $_POST['valor_contable_l'];
+        $v_contable_b = $_POST['valor_contable_b'];
+        $v_avaluo_l = $_POST['valor_avaluo_l'];
+        $v_avaluo_b = $_POST['valor_avaluo_b'];
         $fecha_registro = $_POST['fecha_registro'];
 
         $verify = $con->prepare("SELECT * FROM escritura WHERE nro_matricula = '$nro_matricula'");
@@ -88,7 +93,8 @@ if (isset($_POST['submit'])){
 
             if ($fileError === 0) {
                 if ($fileSize < 4 * 1024 * 1024) {
-                    $newFileName = uniqid('escritura_', true) . ".pdf"; 
+                    $pre_fijo = "escritura_$nombre_";
+                    $newFileName = uniqid($pre_fijo, true) . ".pdf"; 
                     $fileDestination = $uploadDir . $newFileName;
                 
                     if (move_uploaded_file($fileTmpName, $fileDestination)) {

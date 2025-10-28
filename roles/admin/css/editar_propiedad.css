@@ -1,0 +1,178 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container_grid {
+    display: grid;
+    grid-template-areas: "sidebar main";
+    grid-template-columns: auto 1fr;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.grid_contenido_plantilla {
+    grid-area: main;
+    display: grid;
+    grid-template-rows: 30% 5% 25%;
+    padding: 2%;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    gap: 3%;
+}
+
+.aside_barra {
+    grid-area: sidebar;
+}
+
+.header_propiedad {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info_propiedad {
+    display: flex;
+    gap: 30px;
+    margin-left: 2%;
+}
+
+.info {
+    display: grid;
+    grid-template-rows: repeat(auto);
+    gap: 20px;
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* dos columnas iguales */
+    gap: 15px 40px;
+    /* espacio entre filas y columnas */
+}
+
+.items p {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+}
+
+input,
+select,
+textarea {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+}
+
+.icono_prop {
+    margin-top: 7%;
+    width: 80px;
+    height: 80px;
+}
+
+.texto_prop {
+    color: #167a93;
+    margin-bottom: 10px;
+}
+
+.btns {
+    background-color: #167a93;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btns:hover {
+    background-color: #125f73;
+}
+
+.agg_documento {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.escritura,
+.contrato,
+.escritura_file,
+.contrato_file {
+    display: none !important;
+}
+
+.grid_documentos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 20%);
+    height: fit-content;
+    gap: 20px;
+}
+
+.card_doc {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    position: relative;
+}
+
+.ver {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: black;
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.ver:hover {
+    transform: scale(1.1);
+}
+
+.card_header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10%;
+    align-items: center;
+    color: #167a93;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.card_body {
+    font-size: 1.0rem;
+    color: #333;
+    padding: 10px 0;
+}
+
+.card_footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn_icon {
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    color: #167a93;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn_icon:hover {
+    transform: scale(1.1);
+}
+
+btn_icon:hover {
+    transform: scale(1.1);
+}

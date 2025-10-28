@@ -36,7 +36,7 @@ if(isset($_POST['delete'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Propiedades AGUS11</title>
     <link rel="stylesheet" href="css/propiedades.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -64,7 +64,7 @@ if(isset($_POST['delete'])){
                             <option value="<?= $distrito['nom_distrito']?>"><?= $distrito['nom_distrito']?></option>
                         <?php endforeach;?>
                     </select>
-                    <button type="button" class="btn btn-primary btn_all" data-bs-toggle="modal" data-bs-target="#agregar">Crear Propiedad</button>
+                    <button type="button" class="btn btn-primary btns" data-bs-toggle="modal" data-bs-target="#agregar">Crear Propiedad</button>
                 </div>
 
                 <table id="tabla" class="tabla">
@@ -156,9 +156,30 @@ if(isset($_POST['delete'])){
                                   <input type="text" class="form-control" id="ficha_catastral" name="ficha_catastral" >
                               </div>
                               <div class="mb-3 escritura">
-                                  <label for="valor_escritura" class="form-label">Valor</label>
+                                  <label for="valor_escritura" class="form-label">Valor Escritura</label>
                                   <input type="number" min="0" class="form-control" id="valor_escritura" name="valor_escritura" >
                               </div>
+                              <div class="mb-3 escritura">
+                                  <label for="codigo_contable" class="form-label">Codigo Contable</label>
+                                  <input type="text" class="form-control" id="codigo_contable" name="codigo_contable" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="valor_contable_l" class="form-label">Valor Contable Lote</label>
+                                  <input type="number" class="form-control" id="valor_contable_l" name="valor_contable_l" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="valor_contable_b" class="form-label">Valor Contable Building</label>
+                                  <input type="number" class="form-control" id="valor_contable_b" name="valor_contable_b" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="valor_avaluo_l" class="form-label">Valor Avaluo Lote</label>
+                                  <input type="number" class="form-control" id="valor_avaluo_l" name="valor_avaluo_l" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="valor_avaluo_b" class="form-label">Valor Avaluo Building</label>
+                                  <input type="number" class="form-control" id="valor_avaluo_b" name="valor_avaluo_b" >
+                              </div>
+                              
                               <div class="mb-3 escritura">
                                   <label for="fecha_registro" class="form-label">Fecha de Registro</label>
                                   <input type="date" class="form-control" id="fecha_registro" name="fecha_registro" >
@@ -211,7 +232,7 @@ if(isset($_POST['delete'])){
                                 
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn_cancelar" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" name="submit" class="btn btn_all">Crear Propiedad</button>
+                    <button type="submit" name="submit" class="btn btns">Crear Propiedad</button>
                   </div>
                   </form>
 
@@ -358,7 +379,7 @@ if(isset($_POST['delete'])){
                     });
                    console.log("entra");
                 }
-                else if (tipo === "2" || tipo === "4") {
+                else if (tipo === "4" || tipo === "5") {
                     contrato.forEach(function(contrato) {
                         contrato.style.setProperty('display', 'block', 'important');
                     });
@@ -402,6 +423,7 @@ if(isset($_POST['delete'])){
             const ficha_catastral = document.getElementById("ficha_catastral");
             const valor_escritura = document.getElementById("valor_escritura");
             const fecha_registro = document.getElementById("fecha_registro");
+            const codigo_contable = document.getElementById("codigo_contable");
             const escritura_file = document.getElementById("escritura");
             const nro_contrato = document.getElementById("nro_contrato");   
             const valor_contrato = document.getElementById("valor_contrato");
@@ -413,6 +435,10 @@ if(isset($_POST['delete'])){
             let valido = true; 
             const v_contrato = parseFloat(valor_contrato.value);
             const v_escritura = parseFloat(valor_escritura.value);
+            const v_contable_l = parseFloat(valor_contable_l.value);
+            const v_contable_b = parseFloat(valor_contable_b.value);
+            const v_avaluo_l = parseFloat(valor_avaluo_l.value);
+            const v_avaluo_b = parseFloat(valor_avaluo_b.value);
             const matricula = parseInt(nro_matricula.value);
             const n_contrato = parseInt(nro_contrato.value);
 
@@ -426,13 +452,13 @@ if(isset($_POST['delete'])){
         
             if (tipo === "1") {
 
-                if (!nro_matricula.value.trim() || !ficha_catastral.value.trim() || !valor_escritura.value.trim() || !fecha_registro.value.trim()) {
+                if (!nro_matricula.value.trim() || !ficha_catastral.value.trim() || !valor_escritura.value.trim() || !valor_contable_l.value || !valor_contable_b.value || !valor_avaluo_l.value || !valor_avaluo_b.value || !fecha_registro.value.trim()) {
                     Swal.fire({
                         icon: "error",
                         text: "Debe completar todos los campos de escritura"
                     });
                     valido = false;
-                } else if (v_escritura < 0 || matricula < 0) {
+                } else if (v_escritura < 0 || matricula < 0 || v_contable_l < 0 || v_contable_b < 0 || v_avaluo_l < 0 || v_avaluo_b < 0) {
                     Swal.fire({
                         icon: "error",
                         text: "Los numeros deben ser mayor o igual a 0"
@@ -475,7 +501,7 @@ if(isset($_POST['delete'])){
                 
             }
 
-            if (tipo  === "2" || tipo === "4") {
+            if (tipo  === "4" || tipo === "5") {
                 if (!nro_contrato.value.trim() || !valor_contrato.value.trim()) {
                     Swal.fire({
                           icon: "error",
