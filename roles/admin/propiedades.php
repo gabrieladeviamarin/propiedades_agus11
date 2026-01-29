@@ -164,12 +164,20 @@ if(isset($_POST['delete'])){
                                   <input type="text" class="form-control" id="codigo_contable" name="codigo_contable" >
                               </div>
                               <div class="mb-3 escritura">
+                                  <label for="valor_contable" class="form-label">Valor Contable</label>
+                                  <input type="number" class="form-control" id="valor_contable" name="valor_contable" >
+                              </div>
+                              <div class="mb-3 escritura">
                                   <label for="valor_contable_l" class="form-label">Valor Contable Lote</label>
                                   <input type="number" class="form-control" id="valor_contable_l" name="valor_contable_l" >
                               </div>
                               <div class="mb-3 escritura">
                                   <label for="valor_contable_b" class="form-label">Valor Contable Building</label>
                                   <input type="number" class="form-control" id="valor_contable_b" name="valor_contable_b" >
+                              </div>
+                              <div class="mb-3 escritura">
+                                  <label for="valor_avaluo_l" class="form-label">Valor Avaluo</label>
+                                  <input type="number" class="form-control" id="valor_avaluo" name="valor_avaluo" >
                               </div>
                               <div class="mb-3 escritura">
                                   <label for="valor_avaluo_l" class="form-label">Valor Avaluo Lote</label>

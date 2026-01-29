@@ -49,11 +49,7 @@ validarSesionRol($rol,1);
             <img class="icono" src="asideBar/icons/usuarioBlanco.png" alt="">
             <p class="seccionTexto">Usuarios</p>
         </div></a>
-        <a href="./documentos.php"> <div class="seccion">
-            <img class="icono" src="asideBar/icons/documento.png" alt="">
-            <p class="seccionTexto">Documentos</p>
-        </div></a>
-
+        
         <a href="./informes.php"> <div class="seccion">
             <img class="icono" src="asideBar/icons/informe.png" alt="">
             <p class="seccionTexto">Informes</p>
@@ -61,10 +57,6 @@ validarSesionRol($rol,1);
 
         <hr class="white2">
 
-        <a href="./notificaciones.php"> <div class="seccion">
-            <img class="icono" src="asideBar/icons/notificaciones.png" alt="">
-            <p class="seccionTexto">Notificaciones</p>
-        </div></a>
 
         <a href="./configuracion.php"> <div class="seccion">
             <img class="icono" src="asideBar/icons/configuracion.png" alt="">

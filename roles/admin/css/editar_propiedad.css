@@ -176,3 +176,13 @@ textarea {
 btn_icon:hover {
     transform: scale(1.1);
 }
+
+.btn_editar i {
+    color: #000 !important;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: #000;
+    text-decoration: none;
+    z-index: 10;
+}

@@ -1,4 +1,7 @@
 <?php
+
+use PhpOffice\PhpSpreadsheet\Worksheet\RowCellIterator;
+
 session_start();
 require_once('../../database/database.php');
 $conexion = new database;
@@ -16,7 +19,6 @@ WHERE u.id_estado = 1 ORDER BY u.nombre ASC;");
 $usuarios->execute();
 $usuarios = $usuarios->fetchAll(PDO::FETCH_ASSOC);
 
-
 if(isset($_POST['delete'])){
     $id_documento = $_POST['id_documento'];
     $delete = $con->prepare("UPDATE usuario SET id_estado = 2 WHERE id_documento = $id_documento");
@@ -24,6 +26,9 @@ if(isset($_POST['delete'])){
     echo json_encode(['success' => true]);
     exit();
 }
+$roles = $con->prepare("SELECT * FROM rol");
+$roles->execute();
+$roles = $roles->fetchAll(PDO::FETCH_ASSOC);
 
 $editar = null;
 
@@ -38,7 +43,8 @@ if(isset($_POST['editar'])){
     $id_documento = $_POST['cedula_editar'];
     $nombre = $_POST['nombre_editar'];
     $email = $_POST['email_editar'];
-    $query = $con->prepare("UPDATE usuario SET id_documento = $id_documento, nombre = '$nombre', email = '$email' WHERE id_documento= $id_documento");
+    $rol = $_POST['id_rol'];
+    $query = $con->prepare("UPDATE usuario SET id_documento = $id_documento, nombre = '$nombre', email = '$email', id_rol = $rol WHERE id_documento= $id_documento");
     $query->execute();
     $editar = null;
     echo "<!DOCTYPE html>
@@ -195,12 +201,16 @@ if(isset($_POST['submit'])){
                                 <input type="text" class="form-control" id="email_editar" name="email_editar" value="<?= $editar['email'] ?? '' ?>">
                             </div>
                             <div class="mb-3">
-                                <label for="rol_editar" class="form-label">Rol</label>
-                                <input type="number" class="form-control" id="rol_editar" name="rol_editar" value="<?= $editar['nom_rol'] ?? '' ?>">
+                                <label for="id_rol" class="form-label">Rol</label>
+                                <select name="id_rol" id="id_rol" class="form-control">
+                                    <?php foreach($roles as $rol):?>
+                                        <option value="<?= $rol['id_rol']?>"><?= $rol['nom_rol']?></option>
+                                    <?php endforeach;?>
+                                </select>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary btn_cancelar" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" name="editar" class="btn btn_all">Actualizar Distrito</button>
+                                <button type="submit" name="editar" class="btn btn_all">Actualizar Usuario</button>
                             </div>
                         </form>
                     </div>
@@ -228,6 +238,14 @@ if(isset($_POST['submit'])){
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_rol" class="form-label">Rol</label>
+                                <select name="id_rol" id="id_rol" class="form-control">
+                                    <?php foreach($roles as $rol):?>
+                                        <option value="<?= $rol['id_rol']?>"><?= $rol['nom_rol']?></option>
+                                    <?php endforeach;?>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>

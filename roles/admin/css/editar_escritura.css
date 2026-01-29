@@ -1,0 +1,99 @@
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .container_grid {
+        display: grid;
+        grid-template-areas: "sidebar main";
+        grid-template-columns: auto 1fr;
+        width: 100vw;
+        height: 100vh;
+        overflow-x: hidden;
+    }
+    
+    .grid_contenido_plantilla {
+        grid-area: main;
+        display: block;
+        background-color: #fffdfd;
+        padding: 2%;
+        overflow-y: auto;
+    }
+    
+    .contenedor {
+        max-width: 100%;
+        margin: auto;
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, .1);
+    }
+    
+    .contenedor h2 {
+        font-size: 28px;
+        color: #167a93;
+        border-bottom: 2px solid #167a93;
+        margin-bottom: 25px;
+    }
+    
+    .grid_form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+        gap: 3% 3%;
+        align-items: start;
+    }
+    
+    .campo {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .campo label {
+        font-weight: 600;
+        font-size: 100%;
+        margin-bottom: 4%;
+    }
+    
+    .campo input,
+    .campo select {
+        width: 60%;
+        padding: 3% 4%;
+        border-radius: 6%;
+        border: 1px solid #ccc;
+        font-size: 100%;
+    }
+    
+    input[type="file"] {
+        width: 60%;
+        padding: 3% 4%;
+        border-radius: 6%;
+        border: 1px solid #ccc;
+        font-size: 100%;
+    }
+    /* Acciones */
+    
+    .acciones_form {
+        margin-top: 8%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+    
+    .btn_guardar {
+        background-color: #167a93;
+        color: white;
+        border: none;
+        padding: 18px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+    
+    .btn_cancelar {
+        background-color: #6c757d;
+        color: white;
+        padding: 15px 27px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+    }

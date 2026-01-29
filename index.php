@@ -25,7 +25,7 @@ $con = $conexion->conectar();
             <h2>Inicio de Sesión</h2>
             <form action="includes/session_start.php" method="POST" autocomplete="off">
                 <div class="form_group">
-                    <label for="documento">Usuario</label>
+                    <label for="documento">Cedula</label>
                     <input type="text" id="documento" name="id_documento" placeholder="Ingrese su usuario" autocomplete="off">
                     <small id="user" style="color: red; font-size: 14px; display: none;">Usuario no encontrado</small>
                 </div>

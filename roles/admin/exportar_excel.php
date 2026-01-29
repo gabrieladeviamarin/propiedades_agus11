@@ -61,10 +61,10 @@ if(isset($_POST['exportar']) && $_POST['exportar'] == 'excel') {
                         'Ficha Catastral', 'Valor Escritura', 'Fecha Registro', 'Código Contable',
                         'Valor Contable', 'Valor Contable Lote', 'Valor Contable Edificio',
                         'Valor Avalúo', 'Valor Avalúo Lote', 'Valor Avalúo Edificio',
-                        'Nro Contrato', 'Valor Contrato', 'Seguro', 'Escritura Física'];
+                        'Nro Contrato', 'Valor Contrato', 'Seguro', 'Escritura Física', 'Observación'];
 
         // Añadir encabezados con estilos
-        $columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'];
+        $columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'];
         foreach($columnas as $index => $columna) {
             $cell = $sheet->getCell($columna . '1');
             $cell->setValue($encabezados[$index]);
@@ -101,9 +101,11 @@ if(isset($_POST['exportar']) && $_POST['exportar'] == 'excel') {
             $sheet->setCellValue('Q' . $fila, $row['valor_contrato'] ?? '');
             $sheet->setCellValue('R' . $fila, $row['precio'] ?? '');
             $sheet->setCellValue('S' . $fila, (isset($row['documento_pdf']) && !empty($row['documento_pdf'])) ? 'Sí' : 'No');
+            $sheet->setCellValue('T' . $fila, $row['observacion'] ?? '');
+
 
             // Centrar datos
-            $todasLasColumnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'];
+            $todasLasColumnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'];
             foreach($todasLasColumnas as $columna) {
                 $sheet->getCell($columna . $fila)->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
             }
@@ -112,7 +114,7 @@ if(isset($_POST['exportar']) && $_POST['exportar'] == 'excel') {
         }
 
         // Ajustar ancho de columnas
-        $todasLasColumnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'];
+        $todasLasColumnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'];
         foreach($todasLasColumnas as $columna) {
             $sheet->getColumnDimension($columna)->setAutoSize(true);
         }

@@ -53,6 +53,10 @@
         $tipos -> execute();
         $tipos = $tipos -> fetchAll(PDO::FETCH_ASSOC);
 
+        $seguro = $con -> prepare("SELECT * FROM seguros WHERE id_lugar = $id_lugar");
+        $seguro -> execute();
+        $seguro = $seguro -> fetch(PDO::FETCH_ASSOC);
+
         if (isset($_POST['btn_prop'])) {
             $cod_lugar = $_POST['cod_lugar'];
             $distrito = $_POST['distrito'];
@@ -144,9 +148,9 @@
                             <?php foreach ($escrituras as $escritura) {?>
                             <div class="grid_documentos">
                                 <div class="card_doc">
-                                    <a href="" class="ver">
-                                        <i class="bi bi-eye" title="Ver"></i>
-                                    </a>
+                                <a href="editar_escritura.php?nro_matricula=<?= $escritura['nro_matricula'] ?>" class="btn_editar">
+                                    <i class="bi bi-pencil" style="font-size: 1.6rem;" title="Editar"></i>
+                                </a>
                                     <div class="card_header">
                                         <img src="assets/doc.png" alt="" width="50px" height="50px">
                                         <div>
@@ -156,11 +160,11 @@
 
                                     </div>
                                     <div class="card_body">
-                                        <p><strong> Catastral: </strong> <?= $escritura['ficha_catastral']?></p>
+                                        <p><strong>Ficha Catastral: </strong> <?= $escritura['ficha_catastral']?></p>
                                         <p><strong>Fecha Registro:</strong> <?= $escritura['fecha_registro']?></p>
                                         <p><strong>Valor escritura:</strong> <?= $escritura['valor']?></p>
                                         <p><strong>Valor avalúo:</strong> <?= $escritura['valor_avaluo']?></p>
-                                        <p><strong>Asegurada / sin asegurar</strong></p>
+                                        <p><strong><?= ($seguro['tiene_seguro'] == 1) ? 'Asegurada' : 'Sin Asegurar' ?></strong></p>
                                     </div>
                                     <?php if($escritura['documento_pdf']!=null){?>
                                         <div class="card_footer">
@@ -333,7 +337,7 @@
                     escritura.forEach(function(escritura) {
                         escritura.style.setProperty('display', 'block', 'important');
                     });
-                }else if(tipoPropiedad === 4 || tipoPropiedad === 5){
+                }else if( tipoPropiedad === 2 || tipoPropiedad === 4 || tipoPropiedad === 5){
                     contrato.forEach(function(contrato) {
                         contrato.style.setProperty('display', 'block', 'important');
                     });
@@ -349,36 +353,39 @@
                 return;
                 }
 
-                const si = document.getElementById("si");
-        const no = document.getElementById("no");
-        const si2 = document.getElementById("si2");
-        const no2 = document.getElementById("no2");
-
-        const escrituraFile = document.querySelector(".escritura_file");
-        const contratoFile = document.querySelector(".contrato_file");
-
-        // Ocultar ambos campos al abrir el modal
-        escrituraFile.style.display = "none";
-        contratoFile.style.display = "none";
-
-        // Escritura
-        si.addEventListener("change", function () {
-        escrituraFile.style.display = "block";
-        });
-        no.addEventListener("change", function () {
-        escrituraFile.style.display = "none";
-        });
-
-        // Contrato
-        si2.addEventListener("change", function () {
-        contratoFile.style.display = "block";
-        });
-        no2.addEventListener("change", function () {
-        contratoFile.style.display = "none";
-        });
+                
             })
 
             document.addEventListener("DOMContentLoaded", function () {
+                
+                const si = document.getElementById("si");
+                const no = document.getElementById("no");
+                const si2 = document.getElementById("si2");
+                const no2 = document.getElementById("no2");
+                    
+                const escrituraFile = document.querySelector(".escritura_file");
+                const contratoFile = document.querySelector(".contrato_file");
+                    
+                // Ocultar ambos campos al abrir el modal
+                escrituraFile.style.display = "none";
+                contratoFile.style.display = "none";
+                    
+                // Escritura
+                si.addEventListener("change", function () {
+                escrituraFile.style.display = "block";
+                });
+                no.addEventListener("change", function () {
+                escrituraFile.style.display = "none";
+                });
+            
+                // Contrato
+                si2.addEventListener("change", function () {
+                contratoFile.style.display = "block";
+                console.log("si");
+                });
+                no2.addEventListener("change", function () {
+                contratoFile.style.display = "none";
+                });
                 
             const formPropiedad = document.getElementById("propiedad");
             const formDocumento = document.getElementById("agg");
