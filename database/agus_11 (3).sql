@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3307
--- Tiempo de generación: 29-01-2026 a las 04:15:51
+-- Tiempo de generación: 03-02-2026 a las 17:03:54
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -33,13 +33,6 @@ CREATE TABLE `contrato` (
   `id_lugar` int(11) NOT NULL,
   `valor_contrato` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `contrato`
---
-
-INSERT INTO `contrato` (`nro_contrato`, `archivo_contrato`, `id_lugar`, `valor_contrato`) VALUES
-(223, '', 1569, 1312);
 
 -- --------------------------------------------------------
 
@@ -85,7 +78,8 @@ INSERT INTO `distrito` (`id_distrito`, `cod_distrito`, `nom_distrito`, `pastor`,
 (45, 'DTUS23', 'Rioblanco', 'Anderson Albarracin', 3108622493, 1),
 (46, 'DTUS24', 'Santiago Pérez', 'Cristian Prada', 3133233122, 1),
 (47, 'DTUS26', 'SurOriente - Villarrica', 'Edwin Quevedo', 3223054284, 1),
-(48, 'DTUS25', 'Tequendama - La Mesa', 'German Guiza', 3103475647, 1);
+(48, 'DTUS25', 'Tequendama - La Mesa', 'German Guiza', 3103475647, 1),
+(49, 'AGUS11', 'AGUS', 'Willard Cano Osorio', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -114,10 +108,9 @@ CREATE TABLE `escritura` (
 --
 
 INSERT INTO `escritura` (`nro_matricula`, `ficha_catastral`, `documento_pdf`, `valor`, `fecha_registro`, `codigo_contable`, `valor_contable`, `valor_contable_lote`, `valor_contable_build`, `valor_avaluo`, `valor_avaluo_lote`, `valor_avaluo_build`, `id_lugar`) VALUES
-(1321, 'a23e', 'escritura_68e7ec3db9e0a9.28602035.pdf', 5000, '2005-08-20', '', 0, 0, 0, 0, 0, 0, 1565),
-(46161651, 'iushx3292', 'escritura_68f25c8683beb4.29117226.pdf', 1000, '2025-10-15', '', 0, 0, 0, 0, 0, 0, 1566),
-(232, 'EWDW', '', 21, '2000-05-10', '', 0, 0, 0, 0, 0, 0, 1567),
-(8328928, 'JDEQIUOI', 'escritura_,AAAAAAAAAAAAAA68f26ebb97fae0.13986501.pdf', 3232, '2000-02-05', '', 0, 0, 0, 0, 0, 0, 1568);
+(3073, '01-04-0457-0008-000', '', 0, '2023-05-23', 'L0165', 100000000, 0, 0, 0, 0, 0, 1603),
+(30731442, '01-04-0457-0008-000', '', 0, '2023-05-23', 'L0165', 100000000, 0, 0, 0, 0, 0, 1603),
+(2147483647, '01-05-0161-0014-000', '', 0, '2019-12-20', '', 0, 0, 0, 0, 0, 0, 1592);
 
 -- --------------------------------------------------------
 
@@ -179,12 +172,12 @@ INSERT INTO `propiedades` (`id_lugar`, `cod_lugar`, `nom_lugar`, `direccion`, `i
 (1366, 'TUS010', 'Iglesia Jerusalem San Antonio', 'Cll 5 # 08-49  -   B/El Tesoro', NULL, 26, 1, NULL),
 (1367, 'TUS198', 'Iglesia Orion', '', NULL, 26, 1, NULL),
 (1368, 'TUS009', 'Iglesia Renacer Loma larga', 'Vereda Loma Larga', 1, 26, 1, NULL),
-(1370, 'TUS035', 'Iglesia Central Fusa Norte', 'Calle 3  2-57  - Barrio Santander', 1, 27, 1, NULL),
-(1371, 'TUS032', 'Iglesia La Cabaña Fusa Norte', 'Barrio La Cabaña', 1, 27, 1, NULL),
-(1372, 'TUS033', 'Iglesia Luz en la Montaña', 'Vereda Quebrada Honda', 3, 27, 1, NULL),
-(1373, 'TUS036', 'Iglesia Maranatha Silvania Fusa Norte', 'Cl 10 3-38   -  B/Centro', 1, 27, 1, NULL),
-(1374, 'TUS038', 'Iglesia Subia Mensajeros Fusa Norte', 'Vereda De Subia Carbonera', 1, 27, 1, NULL),
-(1375, 'TUS037', 'Iglesia Redencion Vida Sana Fusa Norte', 'Vida Sana', 3, 27, 1, NULL),
+(1370, 'TUS035', 'Iglesia Central Fusa Norte', 'Calle 3  2-57  - Barrio Santander', 1, 27, 2, NULL),
+(1371, 'TUS032', 'Iglesia La Cabaña Fusa Norte', 'Barrio La Cabaña', 1, 27, 2, NULL),
+(1372, 'TUS033', 'Iglesia Luz en la Montaña', 'Vereda Quebrada Honda', 3, 27, 2, NULL),
+(1373, 'TUS036', 'Iglesia Maranatha Silvania Fusa Norte', 'Cl 10 3-38   -  B/Centro', 1, 27, 2, NULL),
+(1374, 'TUS038', 'Iglesia Subia Mensajeros Fusa Norte', 'Vereda De Subia Carbonera', 1, 27, 2, NULL),
+(1375, 'TUS037', 'Iglesia Redencion Vida Sana Fusa Norte', 'Vida Sana', 3, 27, 2, NULL),
 (1376, 'TUS039', 'Iglesia Canaán Guavio', 'Vereda Guavio Alto', 1, 28, 1, NULL),
 (1377, 'TUS040', 'Iglesia Emanuel Venecia Fusa Sur', 'Lote 2 -  Buena Vista', 3, 28, 1, NULL),
 (1378, 'TUS042', 'Iglesia Esmirna Icononzo Fusa Sur', 'Manzana A Lote 7  -  B/Los Almendros', 1, 28, 1, NULL),
@@ -358,12 +351,31 @@ INSERT INTO `propiedades` (`id_lugar`, `cod_lugar`, `nom_lugar`, `direccion`, `i
 (1547, 'TUS186', 'Iglesia Renacer Tequendama', 'Vereda San Antonio', NULL, 48, 1, NULL),
 (1548, 'TUS179', 'Iglesia Sion Cachipay', 'Carrera 3  1-50 Centro', 1, 48, 1, NULL),
 (1549, 'TUS187', 'Iglesia Viota Getsemani Tequendama', 'Barrio El Progreso', 1, 48, 1, NULL),
-(1564, '12121', 'OAJEDOJW', 'DWOIJEOW', 1, 30, 1, 'KJRBDEOIOEJW  '),
-(1565, 'TUS11123', 'Prueba', 'ALDKSi', 1, 25, 1, 'Ninguna'),
-(1566, 'deawdw', 'Iglesia chaparral prueba ', '', 1, 28, 1, 'es casa grande blanca,  la deben etc     '),
-(1567, 'ewqedq', 'holahola', 'iewdko', 1, 24, 1, ' ay probando'),
-(1568, 'wdae', 'AAAAAAAAAAAAAA', 'ODJWI', 1, 25, 1, ''),
-(1569, 'w890q232', 'PRUEBA', 'DIUHAWA', 4, 26, 1, '');
+(1570, 'TUS003', 'Iglesia Buenos Aires Chaparral', 'Vereda Santa Barbara\r\n', 1, 24, 1, NULL),
+(1571, 'TUS005', 'Iglesia Canaan Chaparral\r\n', 'Vereda Escobal', 3, 24, 1, NULL),
+(1572, 'TUS006', 'Iglesia Central Chaparral', 'Calle 7  9-74  -  B/Libertador', 1, 24, 1, NULL),
+(1582, 'TUS002', 'Iglesia Shalom Argentina Chaparral', 'Finca \"El Congo\" V/Da Argentina Rionegro', 1, 24, 1, NULL),
+(1583, 'TUS001', 'Iglesia Adriel Potrerito\r\n', 'Vereda Potrerito Alto', 3, 26, 1, ' '),
+(1584, 'TUS004', 'Iglesia Sion Calarma', 'Vereda  Calarma', 3, 26, 1, NULL),
+(1585, 'TUS035', 'Iglesia Central Fusa Norte', 'Calle 3  2-57  - Barrio Santander', 1, 27, 2, NULL),
+(1586, 'TUS032', 'Iglesia La Cabaña Fusa Norte', 'Barrio La Cabaña', 1, 27, 2, NULL),
+(1587, 'TUS033', 'Iglesia Luz en la Montaña', 'Vereda Quebrada Honda', 3, 27, 2, NULL),
+(1588, 'TUS036', 'Iglesia Maranatha Silvania Fusa Norte', 'Cl 10 3-38 - B/Centro', 1, 27, 2, NULL),
+(1589, 'TUS038', 'Iglesia Subia Mensajeros Fusa Norte', 'Vereda De Subia Carbonera', 1, 27, 2, NULL),
+(1590, 'TUS037', 'Iglesia Redencion Vida Sana Fusa Norte', 'Vida Sana', 3, 27, 2, NULL),
+(1591, 'TUS013', 'Iglesia Bethel Dorada', 'Cra 6 # 15 - 104\r\n', 1, 38, 1, NULL),
+(1592, 'AGUS11', 'Edificio Sede Asociacion Oficinas\r\n', 'Cra 3 No. 40-45 la Castellana', 1, 49, 1, ''),
+(1593, 'SLERID01', 'Colegio Escuela Lerida', 'Lotes Aledaños', 1, 49, 1, NULL),
+(1594, 'SLERID01', 'Casa Maestros Escuela Lerida\r\n', 'Cr. 14 1A-05 Sur B/ Adra-Ofasa\r\n', 1, 49, 1, NULL),
+(1595, 'PRIOBL01', 'Casa Pastoral Rioblanco\r\n', 'Rioblanco, Tolima', 2, 49, 1, NULL),
+(1596, 'PLERID01', 'Casa Pastoral Lerida\r\n', 'Sector 3 Mz. 5 Lote 1 Lérida, Tolima', 1, 49, 1, NULL),
+(1597, 'PESPIN01', 'Casa Pastoral Espinal\r\n', 'Casa Lote 16 Manzana I urbanización Arkabal-Espinal\r\n', 1, 49, 1, NULL),
+(1598, 'SIBAGU01', 'Casa Pastoral Colegio Ibague\r\n', 'C. Simón Bolivar Mz.41\r\n', 4, 49, 1, NULL),
+(1599, 'SIBAGU01', 'Centro Medico Colegio Ibague\r\n', 'C. Simón Bolivar Mz.41\r\n', 4, 49, 1, NULL),
+(1600, 'SIBAGU01', 'Centro Medico Adra Ofasa Ibague\r\n', 'C. Simón Bolivar Mz.41\r\n', 4, 49, 1, NULL),
+(1601, 'FASURC01', 'Lote 1 Finca Asurcol - Sede Campestre\r\n', 'La Colmena Vereda Martinez Rovira Tolima\r\n', 1, 49, 1, NULL),
+(1602, 'FASURC01', 'Lote 2 Finca Asurcol - Vida Sana Y Parqueadero\r\n', 'La Colmena Vereda Martinez Rovira Tolima\r\n', 1, 49, 1, NULL),
+(1603, 'AGUS11', 'Casa Triunfo Donación\r\n', 'Cra 3 No. 40-45 la Castellana', 1, 49, 1, '');
 
 -- --------------------------------------------------------
 
@@ -392,9 +404,18 @@ INSERT INTO `rol` (`id_rol`, `nom_rol`) VALUES
 
 CREATE TABLE `seguros` (
   `id_seguro_` int(11) NOT NULL,
+  `tiene_seguro` int(11) NOT NULL,
   `precio` int(255) NOT NULL,
   `id_lugar` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `seguros`
+--
+
+INSERT INTO `seguros` (`id_seguro_`, `tiene_seguro`, `precio`, `id_lugar`) VALUES
+(0, 1, 947367000, 1592),
+(0, 2, 0, 1603);
 
 -- --------------------------------------------------------
 
@@ -439,7 +460,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_documento`, `nombre`, `email`, `password`, `id_rol`, `id_estado`) VALUES
-(1106227432, 'Gabriela Devia Marin', 'gabrieladeviamarin@gmail.com', '$2y$10$/VR5iyF1JD1AEBswHDHs5elp2/1yzwq6x/bCAiH3aKErP.lA3jZAW', 1, 1);
+(1106227432, 'Gabriela Devia Marin', 'gabrieladeviamarin@gmail.com', '$2y$10$/VR5iyF1JD1AEBswHDHs5elp2/1yzwq6x/bCAiH3aKErP.lA3jZAW', 1, 1),
+(1110511876, 'Heidy Lilian Sanchez', 'auxiliarcontable@asurcol.org', '$2y$10$ACw7G7wpN70cF2S2Fc4epubA7yH8Q/OfqWRNZLy8E.hpdtkL.9tOK', 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -463,6 +485,7 @@ ALTER TABLE `distrito`
 -- Indices de la tabla `escritura`
 --
 ALTER TABLE `escritura`
+  ADD PRIMARY KEY (`nro_matricula`),
   ADD KEY `lugar` (`id_lugar`);
 
 --
@@ -513,7 +536,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `distrito`
 --
 ALTER TABLE `distrito`
-  MODIFY `id_distrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id_distrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT de la tabla `estado`
@@ -525,7 +548,7 @@ ALTER TABLE `estado`
 -- AUTO_INCREMENT de la tabla `propiedades`
 --
 ALTER TABLE `propiedades`
-  MODIFY `id_lugar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1570;
+  MODIFY `id_lugar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1604;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
