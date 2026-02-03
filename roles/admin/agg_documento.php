@@ -4,10 +4,25 @@ require_once('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
-
 if (isset($_POST['submit'])){
 
     $id_lugar = $_POST['id_lugar'];
+    $seguro = $_POST['seguro'];
+    $precio_seguro = isset($_POST['precio_seguro']) && $_POST['precio_seguro'] != '' ? $_POST['precio_seguro'] : 0;
+
+    // Primero manejar el seguro
+    $check_seguro = $con->prepare("SELECT * FROM seguros WHERE id_lugar = $id_lugar");
+    $check_seguro->execute();
+    
+    if ($check_seguro->rowCount() > 0) {
+        // Actualizar seguro existente
+        $query_seguro = $con->prepare("UPDATE seguros SET tiene_seguro = $seguro, precio = $precio_seguro WHERE id_lugar = $id_lugar");
+        $query_seguro->execute();
+    } else {
+        // Insertar nuevo seguro
+        $query_seguro = $con->prepare("INSERT INTO seguros (id_lugar, tiene_seguro, precio) VALUES ($id_lugar, $seguro, $precio_seguro)");
+        $query_seguro->execute();
+    }
 
     if (!empty($_POST['nro_matricula'])){
 
@@ -15,15 +30,16 @@ if (isset($_POST['submit'])){
         $ficha_catastral = $_POST['ficha_catastral'];
         $codigo = $_POST['codigo_contable'];
         $v_escritura = $_POST['valor_escritura'];
-        $v_contable = $_POST['valor_contable'];
-        $v_avaluo = $_POST['valor_avaluo'];
-        $v_contable_l = $_POST['valor_contable_l'];
-        $v_contable_b = $_POST['valor_contable_b'];
-        $v_avaluo_l = $_POST['valor_avaluo_l'];
-        $v_avaluo_b = $_POST['valor_avaluo_b'];
+        
+        // Usar isset() para evitar errores si los campos están vacíos
+        $v_contable = isset($_POST['valor_contable']) && $_POST['valor_contable'] != '' ? $_POST['valor_contable'] : 0;
+        $v_avaluo = isset($_POST['valor_avaluo']) && $_POST['valor_avaluo'] != '' ? $_POST['valor_avaluo'] : 0;
+        $v_contable_l = isset($_POST['valor_contable_l']) && $_POST['valor_contable_l'] != '' ? $_POST['valor_contable_l'] : 0;
+        $v_contable_b = isset($_POST['valor_contable_b']) && $_POST['valor_contable_b'] != '' ? $_POST['valor_contable_b'] : 0;
+        $v_avaluo_l = isset($_POST['valor_avaluo_l']) && $_POST['valor_avaluo_l'] != '' ? $_POST['valor_avaluo_l'] : 0;
+        $v_avaluo_b = isset($_POST['valor_avaluo_b']) && $_POST['valor_avaluo_b'] != '' ? $_POST['valor_avaluo_b'] : 0;
+        
         $fecha_registro = $_POST['fecha_registro'];
-        $seguro = $_POST['seguro'];
-        $precio_seguro = $_POST['precio_seguro'];
 
         $verify = $con->prepare("SELECT * FROM escritura WHERE nro_matricula = '$nro_matricula'");
         $verify->execute();
@@ -38,8 +54,8 @@ if (isset($_POST['submit'])){
                         <body>
                         <script>
                             Swal.fire({
-                                icon: 'success',
-                                text: 'Propiedad Creada con Escritura Escaneada'
+                                icon: 'error',
+                                text: 'Numero de matricula ya existe'
                             }).then(function() {
                                 window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                             });
@@ -51,15 +67,7 @@ if (isset($_POST['submit'])){
 
         $query = $con->prepare("INSERT INTO escritura (nro_matricula, ficha_catastral, codigo_contable, valor, valor_contable, valor_contable_lote, valor_contable_build, valor_avaluo, valor_avaluo_lote, valor_avaluo_build, fecha_registro, id_lugar)
         VALUES ($nro_matricula, '$ficha_catastral', '$codigo', $v_escritura, $v_contable, $v_contable_l, $v_contable_b, $v_avaluo, $v_avaluo_l, $v_avaluo_b, '$fecha_registro', $id_lugar)");
-$query->execute();
-
-        $query_seguro = $con->prepare("INSERT INTO seguros (tiene_seguro, precio) VALUES (1, $precio_seguro) WHERE id_propiedad = $id_lugar");
-        $query_seguro->execute();
-
-        if ($query_seguro->rowCount() == 0) {
-            $query_seguro = $con->prepare("INSERT INTO seguro (id_propiedad, valor) VALUES ($id_lugar, $precio_seguro)");
-            $query_seguro->execute();
-        }
+        $query->execute();
 
         if (isset($_FILES['escritura']) &&  $_FILES['escritura']['error'] !== UPLOAD_ERR_NO_FILE){
 
@@ -71,7 +79,7 @@ $query->execute();
 
             if ($fileError === 0) {
                 if ($fileSize < 4 * 1024 * 1024) {
-                    $pre_fijo = "escritura_$nombre_";
+                    $pre_fijo = "escritura_";
                     $newFileName = uniqid($pre_fijo, true) . ".pdf";
                     $fileDestination = $uploadDir . $newFileName;
 
@@ -89,7 +97,7 @@ $query->execute();
                         <script>
                             Swal.fire({
                                 icon: 'success',
-                                text: 'Propiedad Creada con Escritura Escaneada'
+                                text: 'Documento agregado con escritura escaneada'
                             }).then(function() {
                                 window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                             });
@@ -149,7 +157,7 @@ $query->execute();
                 <script>
                     Swal.fire({
                         icon: 'error',
-                        text: 'Documento de escritura invalido, dirigete a la propiedad y agregala'
+                        text: 'Documento de escritura invalido, dirigite a la propiedad y agregala'
                     }).then(function() {
                         window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                     });
@@ -168,7 +176,7 @@ $query->execute();
                 <script>
                     Swal.fire({
                         icon: 'success',
-                        text: 'Propiedad Creada con Escritura'
+                        text: 'Documento agregado con escritura'
                     }).then(function() {
                         window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                     });
@@ -235,7 +243,7 @@ $query->execute();
                             <script>
                                 Swal.fire({
                                     icon:'success',
-                                    text: 'Propiedad Creada con Contrato Escaneado'
+                                    text: 'Documento agregado con contrato escaneado'
                                 }).then(function() {
                                     window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                                 });
@@ -291,7 +299,7 @@ $query->execute();
                     <script>
                         Swal.fire({
                             icon: 'error',
-                            text: 'Documento de escritura invalido, dirigete a la propiedad y agregalo'
+                            text: 'Documento de contrato invalido, dirigete a la propiedad y agregalo'
                         }).then(function() {
                             window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                         });
@@ -310,7 +318,7 @@ $query->execute();
                     <script>
                         Swal.fire({
                             icon: 'success',
-                            text: 'Propiedad Creada con contrato'
+                            text: 'Documento agregado con contrato'
                         }).then(function() {
                             window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                         });
@@ -328,7 +336,7 @@ $query->execute();
         <script>
             Swal.fire({
                 icon:'success',
-                text: 'Propiedad creada'
+                text: 'Seguro actualizado correctamente'
             }).then(function() {
             window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
         });
@@ -351,7 +359,7 @@ $query->execute();
             icon: 'error',
             text: 'No se envio el formulario correctamente'
         }).then(function() {
-            window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
+            window.location.href='propiedades.php';
         });
     </script>
     </body>
