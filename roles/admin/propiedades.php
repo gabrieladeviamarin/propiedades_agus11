@@ -4,7 +4,7 @@ require_once('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
-$propiedades = $con->prepare("SELECT p.cod_lugar, p.nom_lugar, p.direccion, t.nom_tipo, d.nom_distrito   FROM propiedades p
+$propiedades = $con->prepare("SELECT p.id_lugar, p.cod_lugar, p.nom_lugar, p.direccion, t.nom_tipo, d.nom_distrito  FROM propiedades p
                                 INNER JOIN tipo_propiedad t ON p.id_tip_prop = t.id_tip_prop 
                                 INNER JOIN distrito d ON p.id_distrito = d.id_distrito WHERE p.id_estado = 1 ORDER BY cod_lugar ASC ;");
 $propiedades->execute();
@@ -87,7 +87,7 @@ if(isset($_POST['delete'])){
                             <td><?= $propiedad["nom_distrito"]?></td>
                             <td><?= $propiedad["nom_tipo"] ?></td>
                             <td>
-                                <a href="editar_propiedad.php?codigo=<?= $propiedad['cod_lugar'] ?>" class="btn_editar">
+                                <a href="editar_propiedad.php?id_lugar=<?= $propiedad['id_lugar'] ?>" class="btn_editar">
                                     <i class="bi bi-eye" style="font-size: 1.5rem;" title="Ver"></i>
                                 </a>
                                 |

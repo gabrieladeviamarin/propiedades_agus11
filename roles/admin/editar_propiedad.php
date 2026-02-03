@@ -6,11 +6,11 @@
         $conexion = new database;
         $con = $conexion->conectar();
 
-        if (isset($_GET['codigo'])) {
-            $codigo = $_GET['codigo'];
+        if (isset($_GET['id_lugar'])) {
+            $id_lugar = $_GET['id_lugar'];
             $sql = $con -> prepare("SELECT p.* , t.*, d.nom_distrito FROM propiedades p
             INNER JOIN distrito d ON p.id_distrito = d.id_distrito
-            INNER JOIN tipo_propiedad t ON p.id_tip_prop = t.id_tip_prop WHERE cod_lugar = '$codigo'");
+            INNER JOIN tipo_propiedad t ON p.id_tip_prop = t.id_tip_prop WHERE id_lugar = $id_lugar");
             $sql -> execute();
             $resultado = $sql -> fetch(PDO::FETCH_ASSOC);
         } else {
@@ -33,9 +33,6 @@
             
             exit();
         }
-        $id_lugar = $con -> prepare("SELECT id_lugar FROM propiedades WHERE cod_lugar = '$codigo'");
-        $id_lugar -> execute();
-        $id_lugar = $id_lugar -> fetchColumn();
 
         $escrituras = $con -> prepare("SELECT * FROM escritura WHERE id_lugar = $id_lugar");
         $escrituras -> execute();
@@ -56,6 +53,11 @@
         $seguro = $con -> prepare("SELECT * FROM seguros WHERE id_lugar = $id_lugar");
         $seguro -> execute();
         $seguro = $seguro -> fetch(PDO::FETCH_ASSOC);
+        
+        // Si no hay seguro, crear un array por defecto
+        if (!$seguro) {
+            $seguro = ['tiene_seguro' => 0];
+        }
 
         if (isset($_POST['btn_prop'])) {
             $cod_lugar = $_POST['cod_lugar'];
@@ -64,7 +66,7 @@
             $tipo = $_POST['tipo'];
             $observacion = $_POST['observacion'];
 
-            $sql = $con -> prepare("UPDATE propiedades SET cod_lugar = '$cod_lugar', id_distrito = '$distrito', direccion = '$direccion', id_tip_prop = '$tipo', observacion = '$observacion' WHERE cod_lugar = '$codigo'");
+            $sql = $con -> prepare("UPDATE propiedades SET cod_lugar = '$cod_lugar', id_distrito = '$distrito', direccion = '$direccion', id_tip_prop = '$tipo', observacion = '$observacion' WHERE id_lugar = '$id_lugar'");
             $sql -> execute();
             echo "<!DOCTYPE html>
                 <html>
@@ -77,7 +79,7 @@
                         icon: 'success',
                         text: 'Propiedad Actualizada'
                     }).then(function() {
-                        window.location.href='editar_propiedad.php?codigo=$codigo';
+                        window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                     });
                 </script>
                 </body>
@@ -224,7 +226,29 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                                 <div class="modal-body">
-                                <form action="" id="agg" method="post" enctype="multipart/form-data">
+                                <form action="agg_documento.php" id="agg" method="post" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="id_lugar">
+                                            <input type="hidden" name="id_lugar" id="id_lugar" value="<?= $id_lugar?>">
+                                        </label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="seguro">¿La propiedad tiene seguro?</label>
+                                        <div>
+                                            <div class="form-check-inline">
+                                                <input class="form-check-input" type="radio" name="seguro" id="si" value="1">
+                                                <label class="form-check-label" for="1">Si</label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <input class="form-check-input" type="radio" name="seguro" id="no" value="2">
+                                                <label class="form-check-label" for="2">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="precio_seguro">Valor por el que esta asegurado</label>
+                                        <input type="number" class="form-control" id="precio_seguro" name="precio_seguro">
+                                    </div>
         <!----------------      ------------------------------ SI ESCRITURA ------------------------------------------------>
                                     <div class="mb-3 escritura">
                                         <label for="nro_matricula" class="form-label">Numero de Matricula</label>
@@ -243,12 +267,20 @@
                                         <input type="text" class="form-control" id="codigo_contable" name="codigo_contable" >
                                     </div>
                                     <div class="mb-3 escritura">
+                                        <label for="valor_contable" class="form-label">Valor Contable</label>
+                                        <input type="number" class="form-control" id="valor_contable" name="valor_contable" >
+                                    </div>
+                                    <div class="mb-3 escritura">
                                         <label for="valor_contable_l" class="form-label">Valor Contable Lote</label>
                                         <input type="number" class="form-control" id="valor_contable_l" name="valor_contable_l" >
                                     </div>
                                     <div class="mb-3 escritura">
                                         <label for="valor_contable_b" class="form-label">Valor Contable Building</label>
                                         <input type="number" class="form-control" id="valor_contable_b" name="valor_contable_b" >
+                                    </div>
+                                    <div class="mb-3 escritura">
+                                        <label for="valor_avaluo" class="form-label">Valor Avaluo</label>
+                                        <input type="number" class="form-control" id="valor_avaluo" name="valor_avaluo" >
                                     </div>
                                     <div class="mb-3 escritura">
                                         <label for="valor_avaluo_l" class="form-label">Valor Avaluo Lote</label>
@@ -321,164 +353,223 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
             <script>
-            const tipoPropiedad = Number(<?= json_encode($resultado['id_tip_prop']) ?>);  
-            const btn = document.getElementById("agg_documento");
-            const modal = document.getElementById("agregar");
+const tipoPropiedad = Number(<?= json_encode($resultado['id_tip_prop']) ?>);  
+const btn = document.getElementById("agg_documento");
+const modal = document.getElementById("agregar");
 
-            modal.addEventListener("show.bs.modal", function (event) {
-                const form = document.getElementById("agg");
-                const escritura = document.querySelectorAll(".escritura");
-                const contrato = document.querySelectorAll(".contrato");
-                const escritura_file = document.querySelectorAll(".escritura_file");
-                const contrato_file = document.querySelectorAll(".contrato_file");
-                const opcion = document.querySelectorAll('input[name="opcion"]');
+modal.addEventListener("show.bs.modal", function (event) {
+    const form = document.getElementById("agg");
+    const escritura = document.querySelectorAll(".escritura");
+    const contrato = document.querySelectorAll(".contrato");
+    const escritura_file = document.querySelectorAll(".escritura_file");
+    const contrato_file = document.querySelectorAll(".contrato_file");
+    const radios_escritura = document.querySelectorAll('input[name="opcion"]');
+    const radios_contrato = document.querySelectorAll('input[name="opcion2"]');
+    const radios_seguro = document.querySelectorAll('input[name="seguro"]');
+    const precio_seguro = document.getElementById("precio_seguro").parentElement;
 
-                if (tipoPropiedad === 1) {
-                    escritura.forEach(function(escritura) {
-                        escritura.style.setProperty('display', 'block', 'important');
-                    });
-                }else if( tipoPropiedad === 2 || tipoPropiedad === 4 || tipoPropiedad === 5){
-                    contrato.forEach(function(contrato) {
-                        contrato.style.setProperty('display', 'block', 'important');
-                    });
-                    
-                }else {
-                    event.preventDefault();
-                    Swal.fire({
-                icon: "error",
-                text: "No se puede agregar un documento debido a que no es escritura o contrato",
-                }).then(() => {
-                window.location.href = "editar_propiedad.php?codigo=<?= $codigo ?>";
-                });
-                return;
-                }
+    if (tipoPropiedad === 1) {
+        escritura.forEach(function(escritura) {
+            escritura.style.setProperty('display', 'block', 'important');
+        });
+        contrato.forEach(function(contrato) {
+            contrato.style.setProperty('display', 'none', 'important');
+        });
+    } else if(tipoPropiedad === 2 || tipoPropiedad === 4 || tipoPropiedad === 5){
+        contrato.forEach(function(contrato) {
+            contrato.style.setProperty('display', 'block', 'important');
+        });
+        escritura.forEach(function(escritura) {
+            escritura.style.setProperty('display', 'none', 'important');
+        });
+    } else {
+        event.preventDefault();
+        Swal.fire({
+            icon: "error",
+            text: "No se puede agregar un documento debido a que no es escritura o contrato",
+        }).then(() => {
+            window.location.href = "editar_propiedad.php?id_lugar=<?= $id_lugar ?>";
+        });
+        return;
+    }
 
-                
-            })
+    // Resetear radios y ocultar campos de archivo
+    radios_escritura.forEach(r => r.checked = false);
+    radios_contrato.forEach(r => r.checked = false);
+    radios_seguro.forEach(r => r.checked = false);
+    escritura_file.forEach(e => e.style.display = "none");
+    contrato_file.forEach(c => c.style.display = "none");
+    precio_seguro.style.display = "none";
+});
 
-            document.addEventListener("DOMContentLoaded", function () {
-                
-                const si = document.getElementById("si");
-                const no = document.getElementById("no");
-                const si2 = document.getElementById("si2");
-                const no2 = document.getElementById("no2");
-                    
-                const escrituraFile = document.querySelector(".escritura_file");
-                const contratoFile = document.querySelector(".contrato_file");
-                    
-                // Ocultar ambos campos al abrir el modal
-                escrituraFile.style.display = "none";
-                contratoFile.style.display = "none";
-                    
-                // Escritura
-                si.addEventListener("change", function () {
-                escrituraFile.style.display = "block";
-                });
-                no.addEventListener("change", function () {
-                escrituraFile.style.display = "none";
-                });
-            
-                // Contrato
-                si2.addEventListener("change", function () {
-                contratoFile.style.display = "block";
-                console.log("si");
-                });
-                no2.addEventListener("change", function () {
-                contratoFile.style.display = "none";
-                });
-                
-            const formPropiedad = document.getElementById("propiedad");
-            const formDocumento = document.getElementById("agg");
-                
-            function validarFormulario(event) {
-            const formId = event.target.id;
-            let valido = true;
+document.addEventListener("DOMContentLoaded", function () {
+    // Radio buttons de seguro - usando name y value
+    const si_seguro = document.querySelector('input[name="seguro"][value="1"]');
+    const no_seguro = document.querySelector('input[name="seguro"][value="2"]');
+    
+    // Radio buttons de escritura - usando name y value
+    const si_escritura = document.querySelector('input[name="opcion"][value="1"]');
+    const no_escritura = document.querySelector('input[name="opcion"][value="2"]');
+    
+    // Radio buttons de contrato - usando name y value
+    const si_contrato = document.querySelector('input[name="opcion2"][value="1"]');
+    const no_contrato = document.querySelector('input[name="opcion2"][value="2"]');
+    
+    const escrituraFile = document.querySelectorAll(".escritura_file");
+    const contratoFile = document.querySelectorAll(".contrato_file");
+    const precio_seguro = document.getElementById("precio_seguro").parentElement;
+    
+    // Ocultar el campo de precio del seguro al cargar
+    precio_seguro.style.display = "none";
+    
+    // Función para mostrar/ocultar campo de precio del seguro
+    function togglePrecioSeguro() {
+        if (si_seguro && si_seguro.checked) {
+            precio_seguro.style.display = "block";
+        } else {
+            precio_seguro.style.display = "none";
+            document.getElementById("precio_seguro").value = ""; // Limpiar el valor
+        }
+    }
+    
+    // Función para mostrar/ocultar campos de archivo de escritura y contrato
+    function subir_file() {
+        // Ocultar todos los campos de archivo
+        escrituraFile.forEach(e => e.style.display = "none");
+        contratoFile.forEach(c => c.style.display = "none");
+
+        // Mostrar campo de escritura si se selecciona "Si"
+        if (si_escritura && si_escritura.checked) {
+            escrituraFile.forEach(e => e.style.display = "block");
+        }
+
+        // Mostrar campo de contrato si se selecciona "Si"
+        if (si_contrato && si_contrato.checked) {
+            contratoFile.forEach(c => c.style.display = "block");
+        }
+    }
+
+    // Agregar listeners a los radio buttons de seguro
+    if (si_seguro) si_seguro.addEventListener("change", togglePrecioSeguro);
+    if (no_seguro) no_seguro.addEventListener("change", togglePrecioSeguro);
+    
+    // Agregar listeners a los radio buttons de escritura
+    if (si_escritura) si_escritura.addEventListener("change", subir_file);
+    if (no_escritura) no_escritura.addEventListener("change", subir_file);
+    
+    // Agregar listeners a los radio buttons de contrato
+    if (si_contrato) si_contrato.addEventListener("change", subir_file);
+    if (no_contrato) no_contrato.addEventListener("change", subir_file);
+
+    const formPropiedad = document.getElementById("propiedad");
+    const formDocumento = document.getElementById("agg");
+    
+    function validarFormulario(event) {
+        const formId = event.target.id;
+    
+        if (formId === "propiedad") {
+            const codigo = document.querySelector('input[name="cod_lugar"]');
+            const direccion = document.getElementById("direccion");
+            const distrito = document.getElementById("distrito");
+            const tipo = document.getElementById("tipo");
         
-                if (formId === "propiedad") {
-                const codigo = document.getElementById("cod_lugar");
-                const direccion = document.getElementById("direccion");
-                const distrito = document.getElementById("distrito");
-                const tipo = document.getElementById("tipo");
-            
-                if (!codigo.value.trim() || !direccion.value.trim() || !distrito.value.trim() || !tipo.value.trim()) {
+            if (!codigo.value.trim() || !direccion.value.trim() || !distrito.value.trim() || !tipo.value.trim()) {
                 event.preventDefault();
                 Swal.fire({ 
                     icon: "error", 
-                    text: "Todos los campos deben ser diligenciados en la propiedad" });
-                valido = false;
-                }
+                    text: "Todos los campos deben ser diligenciados en la propiedad" 
+                });
+                return false;
             }
+        }
+    
+        if (formId === "agg") {
+            const nro_matricula = document.getElementById("nro_matricula");
+            const ficha_catastral = document.getElementById("ficha_catastral");
+            const valor_escritura = document.getElementById("valor_escritura");
+            const fecha_registro = document.getElementById("fecha_registro");
+            const escritura_file = document.getElementById("escritura");
+            
+            const nro_contrato = document.getElementById("nro_contrato");
+            const valor_contrato = document.getElementById("valor_contrato");
+            const contrato_file = document.getElementById("contrato");
+            
+            const precio_seguro_input = document.getElementById("precio_seguro");
         
-                if (formId === "agg") {
-                const nro_matricula = document.getElementById("nro_matricula");
-                const ficha_catastral = document.getElementById("ficha_catastral");
-                const valor_escritura = document.getElementById("valor_escritura");
-                const fecha_registro = document.getElementById("fecha_registro");
-                const escritura_file = document.getElementById("escritura");
-                const si = document.getElementById("si");
-                const no = document.getElementById("no");
+            // --- Validar seguro ---
+            if (!si_seguro.checked && !no_seguro.checked) {
+                event.preventDefault();
+                Swal.fire({ icon: "error", text: "Debe seleccionar si la propiedad tiene seguro o no" });
+                return false;
+            }
             
-                const nro_contrato = document.getElementById("nro_contrato");
-                const valor_contrato = document.getElementById("valor_contrato");
-                const contrato_file = document.getElementById("contrato");
-                const si2 = document.getElementById("si2");
-                const no2 = document.getElementById("no2");
+            if (si_seguro.checked && !precio_seguro_input.value.trim()) {
+                event.preventDefault();
+                Swal.fire({ icon: "error", text: "Debe ingresar el valor del seguro" });
+                return false;
+            }
             
-                // --- Validar escritura ---
-                if (nro_matricula.value.trim() !== "") {
+            // --- Validar escritura ---
+            if (nro_matricula.value.trim() !== "") {
                 if (!ficha_catastral.value.trim() || !valor_escritura.value.trim() || !fecha_registro.value.trim()) {
+                    event.preventDefault();
                     Swal.fire({ icon: "error", text: "Debe completar todos los campos de escritura" });
-                    event.preventDefault();
-                    valido = false;
+                    return false;
                 }
-                if (!si.checked && !no.checked) {
+                if (!si_escritura.checked && !no_escritura.checked) {
+                    event.preventDefault();
                     Swal.fire({ icon: "error", text: "Debe seleccionar si tiene o no la escritura" });
-                    event.preventDefault();
-                    valido = false;
+                    return false;
                 }
-                if (si.checked && !escritura_file.files.length) {
+                if (si_escritura.checked && !escritura_file.files.length) {
+                    event.preventDefault();
                     Swal.fire({ icon: "error", text: "Debe subir un documento escaneado de la escritura" });
-                    event.preventDefault();
-                    valido = false;
+                    return false;
                 }
-                }
-            
-                // --- Validar contrato ---
-                if (nro_contrato.value.trim() !== "") {
-                if (!valor_contrato.value.trim()) {
-                    Swal.fire({ icon: "error", text: "Debe completar los campos del contrato" });
-                    event.preventDefault();
-                    valido = false;
-                }
-                if (!si2.checked && !no2.checked) {
-                    Swal.fire({ icon: "error", text: "Debe seleccionar si tiene o no el contrato" });
-                    event.preventDefault();
-                    valido = false;
-                }
-                if (si2.checked && !contrato_file.files.length) {
-                    Swal.fire({ icon: "error", text: "Debe subir un documento escaneado del contrato" });
-                    event.preventDefault();
-                    valido = false;
-                }
-                }
-            
-                // Si ambos están vacíos
-                if (nro_matricula.value.trim() === "" && nro_contrato.value.trim() === "") {
-                Swal.fire({ 
-                    icon: "error", 
-                    text: "Debe completar todos los campos del formulario" });
-                event.preventDefault();
-                valido = false;
-                }
-            }
             }
         
-            // Escuchar ambos formularios SIEMPRE
-            formPropiedad.addEventListener("submit", validarFormulario);
-            formDocumento.addEventListener("submit", validarFormulario, true);
-
-            });
+            // --- Validar contrato ---
+            if (nro_contrato.value.trim() !== "") {
+                if (!valor_contrato.value.trim()) {
+                    event.preventDefault();
+                    Swal.fire({ icon: "error", text: "Debe completar los campos del contrato" });
+                    return false;
+                }
+                if (!si_contrato.checked && !no_contrato.checked) {
+                    event.preventDefault();
+                    Swal.fire({ icon: "error", text: "Debe seleccionar si tiene o no el contrato" });
+                    return false;
+                }
+                if (si_contrato.checked && !contrato_file.files.length) {
+                    event.preventDefault();
+                    Swal.fire({ icon: "error", text: "Debe subir un documento escaneado del contrato" });
+                    return false;
+                }
+            }
+        
+            // Si ambos están vacíos
+            if (nro_matricula.value.trim() === "" && nro_contrato.value.trim() === "") {
+                event.preventDefault();
+                Swal.fire({ 
+                    icon: "error", 
+                    text: "Debe completar todos los campos del formulario" 
+                });
+                return false;
+            }
             
-            </script>
+            // Si todo está bien, permitir el envío
+            return true;
+        }
+    }
+
+    // Escuchar ambos formularios
+    if (formPropiedad) {
+        formPropiedad.addEventListener("submit", validarFormulario);
+    }
+    if (formDocumento) {
+        formDocumento.addEventListener("submit", validarFormulario);
+    }
+});
+</script>
         </body>
         </html>

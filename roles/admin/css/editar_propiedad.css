@@ -101,13 +101,6 @@ textarea {
     justify-content: flex-start;
 }
 
-.escritura,
-.contrato,
-.escritura_file,
-.contrato_file {
-    display: none !important;
-}
-
 .grid_documentos {
     display: grid;
     grid-template-columns: repeat(auto-fit, 20%);

@@ -14,7 +14,8 @@ if (isset($_GET['nro_matricula'])) {
 
     $sql->execute([':nro_matricula' => $nro_matricula]);
     $escritura = $sql->fetch(PDO::FETCH_ASSOC);
-
+    
+    $id_lugar = $escritura['id_lugar']; 
     if (!$escritura) {
         echo "<!DOCTYPE html>
             <html>
@@ -27,7 +28,7 @@ if (isset($_GET['nro_matricula'])) {
                     icon: 'error',
                     text: 'No se encuentra el Nro Matricula de la propiedad',
                 }).then(() => {
-                    window.location.href = 'editar_propiedad.php';
+                    window.location.href = 'editar_propiedad.php?id_lugar=$id_lugar';
                 });
             </script>
             </body>
@@ -48,7 +49,7 @@ if (isset($_GET['nro_matricula'])) {
                     icon: 'error',
                     text: 'No se encuentra el Nro Matricula de la propiedad',
                 }).then(() => {
-                    window.location.href = 'editar_propiedad.php';
+                    window.location.href = 'editar_propiedad.php?id_lugar=$id_lugar';
                 });
             </script>
             </body>
@@ -56,8 +57,6 @@ if (isset($_GET['nro_matricula'])) {
             
     exit();
 }
-
-$cod_lugar = $escritura['cod_lugar']; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nro_matricula = $_POST['nro_matricula'];
@@ -115,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             icon: 'error',
                             text: 'Error al subir la escritura'
                         }).then(function() {
-                            window.location.href='editar_propiedad.php?codigo=$cod_lugar';
+                            window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                         });
                     </script>
                     </body>
@@ -135,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         icon: 'error',
                         text: 'La escritura es muy pesada, máximo 4MB'
                     }).then(function() {
-                        window.location.href='editar_propiedad.php?codigo=$cod_lugar';
+                        window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                     });
                 </script>
                 </body>
@@ -154,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     icon: 'error',
                     text: 'Error al procesar el archivo'
                 }).then(function() {
-                    window.location.href='editar_propiedad.php?codigo=$cod_lugar';
+                    window.location.href='editar_propiedad.php?id_lugar=$id_lugar';
                 });
             </script>
             </body>
@@ -228,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 icon: 'success',
                 text: 'Registros Actualizados',
             }).then(() => {
-                window.location.href = 'editar_propiedad.php?codigo=$cod_lugar';
+                window.location.href = 'editar_propiedad.php?id_lugar=$id_lugar';
             });
         </script>
         </body>
@@ -327,7 +326,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="acciones_form">
-                <a href="editar_propiedad.php?codigo=<?= $cod_lugar ?>" class="btn_cancelar">Cancelar</a>
+                <a href="editar_propiedad.php?id_lugar=<?= $id_lugar ?>" class="btn_cancelar">Cancelar</a>
                 <button type="submit" class="btn_guardar">Guardar Cambios</button>
             </div>
 
