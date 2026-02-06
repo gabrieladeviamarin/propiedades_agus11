@@ -1,0 +1,323 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container_grid {
+    display: grid;
+    grid-template-areas: "sidebar main";
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    width: 100vw;
+    height: 100vh;
+}
+
+.grid_contenido_plantilla {
+    grid-area: main;
+    padding: 2%;
+    overflow: auto;
+    height: 100vh;
+}
+
+.aside_barra {
+    grid-area: sidebar;
+}
+
+.contenedor {
+    padding: 2rem;
+}
+
+
+/* Header de configuración */
+
+.header-config {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px solid #e0e0e0;
+}
+
+.header-config h2 {
+    color: #167a93;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.header-config h2 i {
+    color: #167a93;
+}
+
+.header-config .subtitle {
+    color: black;
+    font-size: 1rem;
+    margin: 0;
+}
+
+
+/* Tarjeta de información personal */
+
+.info-card .form-control-config,
+.info-card input,
+.info-card textarea,
+.info-card select {
+    color: #2c3e50;
+    /* texto oscuro */
+    background-color: #ffffff;
+}
+
+.info-card .form-control-config::placeholder {
+    color: #7f8c8d;
+}
+
+
+/* Labels dentro del formulario */
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item label {
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.info-item span {
+    font-weight: 500;
+}
+
+.badge-rol {
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+
+/* Contenedor de tarjetas */
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+
+/* Tarjetas de configuración */
+
+.card-config {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-header-config {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 3px solid #2574a9;
+}
+
+.card-header-config i {
+    font-size: 1.5rem;
+}
+
+.card-header-config h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card-body-config {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem 3rem;
+    padding: 1.5rem;
+}
+
+.form-group-config {
+    margin-bottom: 1.25rem;
+}
+
+.form-group-config label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #167a93;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-control-config {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.form-control-config:focus {
+    outline: none;
+    border-color: #3498db;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-control-config:read-only {
+    background-color: #ecf0f1;
+    color: #7f8c8d;
+    cursor: not-allowed;
+}
+
+.password-input-wrapper {
+    position: relative;
+}
+
+.password-input-wrapper input {
+    padding-right: 3rem;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #7f8c8d;
+    font-size: 1.25rem;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: #3498db;
+}
+
+
+/* Indicador de fortaleza de contraseña */
+
+.password-strength {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.password-strength.weak {
+    color: #e74c3c;
+}
+
+.password-strength.medium {
+    color: #f39c12;
+}
+
+.password-strength.strong {
+    color: #27ae60;
+}
+
+
+/* Botones */
+
+.btn-config {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-primary-config {
+    background: linear-gradient(135deg, #167a93 0%, #2980b9 100%);
+    color: white;
+}
+
+.btn-primary-config:active {
+    transform: translateY(0);
+}
+
+
+/* Tarjeta de consejos de seguridad */
+
+.security-tips {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+}
+
+.security-tips .card-header-config {
+    background: rgba(0, 0, 0, 0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tips-list li {
+    padding: 0.75rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tips-list li:last-child {
+    border-bottom: none;
+}
+
+.tips-list i {
+    color: white;
+    font-size: 1.25rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+
+/* Responsive */
+
+@media (max-width: 1024px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .contenedor {
+        padding: 1rem;
+    }
+    .header-config h2 {
+        font-size: 1.5rem;
+    }
+    .card-header-config h3 {
+        font-size: 1.1rem;
+    }
+    .cards-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}

@@ -7,7 +7,7 @@ require_once('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
-$conteo = $con->prepare("SELECT COUNT(*) FROM distrito");
+$conteo = $con->prepare("SELECT COUNT(*) FROM usuario WHERE id_estado = 1");
 $conteo->execute();
 $total = $conteo->fetchColumn();
 
@@ -21,11 +21,13 @@ $usuarios = $usuarios->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['delete'])){
     $id_documento = $_POST['id_documento'];
-    $delete = $con->prepare("UPDATE usuario SET id_estado = 2 WHERE id_documento = $id_documento");
+    $delete = $con->prepare("UPDATE usuario SET id_estado = 2 WHERE id_documento = :id_documento");
+    $delete->bindParam(':id_documento', $id_documento);
     $delete->execute();
     echo json_encode(['success' => true]);
     exit();
 }
+
 $roles = $con->prepare("SELECT * FROM rol");
 $roles->execute();
 $roles = $roles->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +36,8 @@ $editar = null;
 
 if(isset($_GET['cedula'])){
     $id_documento = $_GET['cedula'];
-    $query = $con->prepare("SELECT * FROM usuario WHERE id_documento = $id_documento");
+    $query = $con->prepare("SELECT * FROM usuario WHERE id_documento = :id_documento");
+    $query->bindParam(':id_documento', $id_documento);
     $query->execute();  
     $editar = $query->fetch(PDO::FETCH_ASSOC);
 }
@@ -44,9 +47,14 @@ if(isset($_POST['editar'])){
     $nombre = $_POST['nombre_editar'];
     $email = $_POST['email_editar'];
     $rol = $_POST['id_rol'];
-    $query = $con->prepare("UPDATE usuario SET id_documento = $id_documento, nombre = '$nombre', email = '$email', id_rol = $rol WHERE id_documento= $id_documento");
+    
+    $query = $con->prepare("UPDATE usuario SET nombre = :nombre, email = :email, id_rol = :rol WHERE id_documento = :id_documento");
+    $query->bindParam(':nombre', $nombre);
+    $query->bindParam(':email', $email);
+    $query->bindParam(':rol', $rol);
+    $query->bindParam(':id_documento', $id_documento);
     $query->execute();
-    $editar = null;
+    
     echo "<!DOCTYPE html>
                     <html>
                     <head>
@@ -63,7 +71,7 @@ if(isset($_POST['editar'])){
                     </script>
                     </body>
                     </html>";
-                    exit();
+    exit();
 }
 
 if(isset($_POST['submit'])){
@@ -73,9 +81,12 @@ if(isset($_POST['submit'])){
     $rol = $_POST['id_rol'];
     $password = $_POST['password'];
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
-    $query = $con->prepare("SELECT * FROM usuario WHERE id_documento = $id_documento");
+    
+    $query = $con->prepare("SELECT * FROM usuario WHERE id_documento = :id_documento");
+    $query->bindParam(':id_documento', $id_documento);
     $query->execute();
     $query = $query->fetch(PDO::FETCH_ASSOC);
+    
     if($query){
         echo "<!DOCTYPE html>
                     <html>
@@ -93,10 +104,17 @@ if(isset($_POST['submit'])){
                     </script>
                     </body>
                     </html>";
-                    exit();
+        exit();
     }
-    $query = $con->prepare("INSERT INTO usuario (id_documento, nombre, email, password, id_rol, id_estado) VALUES ($id_documento, '$nombre', '$email', '$password_hash', $rol, 1)");
+    
+    $query = $con->prepare("INSERT INTO usuario (id_documento, nombre, email, password, id_rol, id_estado) VALUES (:id_documento, :nombre, :email, :password_hash, :rol, 1)");
+    $query->bindParam(':id_documento', $id_documento);
+    $query->bindParam(':nombre', $nombre);
+    $query->bindParam(':email', $email);
+    $query->bindParam(':password_hash', $password_hash);
+    $query->bindParam(':rol', $rol);
     $query->execute();
+    
     echo "<!DOCTYPE html>
                     <html>
                     <head>
@@ -113,7 +131,6 @@ if(isset($_POST['submit'])){
                     </script>
                     </body>
                     </html>";
-                    
     exit();
 }
 
@@ -157,10 +174,10 @@ if(isset($_POST['submit'])){
                     <?php foreach($usuarios as $usuario): ?>
                         <tr>
                             <td><?= $usuario['id_documento'] ?></td>
-                            <td><?=$usuario['nombre'] ?></td>
-                            <td><?=$usuario['email']  ?></td>
-                            <td><?=$usuario['nom_rol'] ?></td>
-                            <td><?=$usuario['nom_estado']?></td>
+                            <td><?= $usuario['nombre'] ?></td>
+                            <td><?= $usuario['email']  ?></td>
+                            <td><?= $usuario['nom_rol'] ?></td>
+                            <td><?= $usuario['nom_estado']?></td>
                             <td>
                                 <a href="?cedula=<?= $usuario['id_documento'] ?>" class="btn_editar" style="font-size: 1.4rem;">
                                     <i class="bi bi-pencil"></i>
@@ -169,7 +186,6 @@ if(isset($_POST['submit'])){
                                 <a href="#" class="btn_editar" onclick="confirmar_delete('<?= $usuario['id_documento'] ?>','<?= $usuario['nombre'] ?>')">
                                     <i class="bi bi-slash-circle" style="font-size: 1.4rem;" title="Inhabilitar"></i> 
                                 </a>
-                    
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -194,17 +210,17 @@ if(isset($_POST['submit'])){
                             </div>
                             <div class="mb-3">
                                 <label for="nombre_editar" class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" id="nombre_editar" name="nombre_editar" value="<?= $editar['nombre'] ?? '' ?>">
+                                <input type="text" class="form-control" id="nombre_editar" name="nombre_editar" value="<?= $editar['nombre'] ?? '' ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email_editar" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="email_editar" name="email_editar" value="<?= $editar['email'] ?? '' ?>">
+                                <input type="email" class="form-control" id="email_editar" name="email_editar" value="<?= $editar['email'] ?? '' ?>" required>
                             </div>
                             <div class="mb-3">
-                                <label for="id_rol" class="form-label">Rol</label>
-                                <select name="id_rol" id="id_rol" class="form-control">
+                                <label for="id_rol_editar" class="form-label">Rol</label>
+                                <select name="id_rol" id="id_rol_editar" class="form-control" required>
                                     <?php foreach($roles as $rol):?>
-                                        <option value="<?= $rol['id_rol']?>"><?= $rol['nom_rol']?></option>
+                                        <option value="<?= $rol['id_rol']?>" <?= (isset($editar['id_rol']) && $editar['id_rol'] == $rol['id_rol']) ? 'selected' : '' ?>><?= $rol['nom_rol']?></option>
                                     <?php endforeach;?>
                                 </select>
                             </div>
@@ -229,19 +245,19 @@ if(isset($_POST['submit'])){
                         <form action="" id="agg" method="post">
                             <div class="mb-3">
                                 <label for="cedula" class="form-label">Cedula</label>
-                                <input type="number" class="form-control" id="cedula" name="cedula">
+                                <input type="number" class="form-control" id="cedula" name="cedula" required>
                             </div>
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" >
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="email" name="email" >
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="id_rol" class="form-label">Rol</label>
-                                <select name="id_rol" id="id_rol" class="form-control">
+                                <select name="id_rol" id="id_rol" class="form-control" required>
                                     <?php foreach($roles as $rol):?>
                                         <option value="<?= $rol['id_rol']?>"><?= $rol['nom_rol']?></option>
                                     <?php endforeach;?>
@@ -249,7 +265,7 @@ if(isset($_POST['submit'])){
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="password" name="password" >
+                                <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn_cancelar" data-bs-dismiss="modal">Cerrar</button>
@@ -283,9 +299,9 @@ if(isset($_POST['submit'])){
         });
     });
 ////////////////////////////////// ALERTA ELIMINAR //////////////////////////////////////////
-    function confirmar_delete(codigo, nombre) {
+    function confirmar_delete(id_documento, nombre) {
         Swal.fire({
-            html: `¿Desea inhabilitar el distrito <strong>${nombre}</strong>?<br><small class="text-muted">Esta acción no se puede deshacer</small>`,
+            html: `¿Desea inhabilitar el usuario <strong>${nombre}</strong>?<br><small class="text-muted">Esta acción no se puede deshacer</small>`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -295,26 +311,26 @@ if(isset($_POST['submit'])){
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch('distritos.php', {
+                fetch('usuarios.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: `delete=1&cod_distrito=${codigo}`
+                    body: `delete=1&id_documento=${id_documento}`
                 })
                 .then(response => response.json())
                 .then(data => {
                     if(data.success) {
                         Swal.fire({
                             icon: 'success',
-                            text: 'La propiedad ha sido inhabilitada'
+                            text: 'El usuario ha sido inhabilitado'
                         }).then(() => {
                             location.reload();
                         });
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            text: data.message || 'No se pudo inhabilitar la propiedad'
+                            text: data.message || 'No se pudo inhabilitar el usuario'
                         });
                     }
                 })
@@ -328,10 +344,11 @@ if(isset($_POST['submit'])){
             }
         });
     }
-///////////////// FILTROS Y DISPLAY DE CAMPOS AGG //////////////////
+///////////////// FILTROS //////////////////
     document.addEventListener("DOMContentLoaded", () => {
         const buscador = document.getElementById("buscador");
         const filas = document.querySelectorAll("#tabla tbody tr");
+        
         function filtrarTabla() {
             const texto = buscador.value.toLowerCase();
             filas.forEach(fila => {
@@ -341,49 +358,93 @@ if(isset($_POST['submit'])){
             });
         }
         buscador.addEventListener("keyup", filtrarTabla);
-////////////////////// FORMULARIO EDITAR Y AGG ///////////////////////////////////
-    function cerrar_modal() {
-        window.location.href = 'distritos.php';
-    }
-    <?php if($editar){ ?>
-        const modal_editar = new bootstrap.Modal(document.getElementById('modal_editar'));
-        modal_editar.show();
-        document.getElementById('modal_editar').addEventListener('hidden.bs.modal', function () {
-            cerrar_modal();
-        });
-    <?php }; ?>
-    
-    const formEditar = document.getElementById("formEditar");
-    
-    if(formEditar) {
-        formEditar.addEventListener("submit", function(event) {
-            const nombre = document.getElementById("nombre_editar");
-            const pastor = document.getElementById("pastor_editar");
-            const celular = document.getElementById("celular_editar");
+        
+////////////////////// MODAL EDITAR ///////////////////////////////////
+        function cerrar_modal() {
+            window.location.href = 'usuarios.php';
+        }
+        
+        <?php if($editar){ ?>
+            const modal_editar = new bootstrap.Modal(document.getElementById('modal_editar'));
+            modal_editar.show();
+            document.getElementById('modal_editar').addEventListener('hidden.bs.modal', function () {
+                cerrar_modal();
+            });
+        <?php }; ?>
+        
+////////////////////// VALIDACIONES FORMULARIO EDITAR ///////////////////////////////////
+        const formEditar = document.getElementById("formEditar");
+        
+        if(formEditar) {
+            formEditar.addEventListener("submit", function(event) {
+                const nombre = document.getElementById("nombre_editar");
+                const email = document.getElementById("email_editar");
+                let valido = true;
+            
+                if (!nombre.value.trim() || !email.value.trim()) {
+                    Swal.fire({
+                        icon: "error",
+                        text: "Todos los campos deben ser diligenciados"
+                    });
+                    valido = false;
+                } else if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre.value)) {
+                    Swal.fire({
+                        icon: "error",
+                        text: "El nombre solo puede contener letras"
+                    });
+                    valido = false;
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                    Swal.fire({
+                        icon: "error",
+                        text: "Ingrese un email válido"
+                    });
+                    valido = false;
+                }
+            
+                if (!valido) {
+                    event.preventDefault();
+                }
+            });
+        }
+        
+////////////////////// VALIDACIONES FORMULARIO CREAR ///////////////////////////////////
+        const form = document.getElementById("agg");
+        
+        function validarFormulario(event) {
+            const cedula = document.getElementById("cedula");
+            const nombre = document.getElementById("nombre");
+            const email = document.getElementById("email");
+            const password = document.getElementById("password");
             let valido = true;
         
-            if (!nombre.value.trim() || !pastor.value.trim() || !celular.value.trim()) {
+            if (!cedula.value.trim() || !nombre.value.trim() || !email.value.trim() || !password.value.trim()) {
                 Swal.fire({
                     icon: "error",
                     text: "Todos los campos deben ser diligenciados"
                 });
                 valido = false;
+            } else if (!/^\d{6,15}$/.test(cedula.value)) {
+                Swal.fire({
+                    icon: "error",
+                    text: "La cédula debe contener entre 6 y 15 dígitos"
+                });
+                valido = false;
             } else if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre.value)) {
                 Swal.fire({
                     icon: "error",
-                    text: "El nombre del distrito solo puede contener letras"
+                    text: "El nombre solo puede contener letras"
                 });
                 valido = false;
-            } else if (pastor.value.length < 6 || !/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(pastor.value)) {
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
                 Swal.fire({
                     icon: "error",
-                    text: "El nombre del pastor solo puede contener letras y minimo 6 caracteres"
+                    text: "Ingrese un email válido"
                 });
                 valido = false;
-            } else if (!/^\d{10}$/.test(celular.value)) {
+            } else if (password.value.length < 6) {
                 Swal.fire({
                     icon: "error",
-                    text: "El número debe tener exactamente 10 digitos"
+                    text: "La contraseña debe tener al menos 6 caracteres"
                 });
                 valido = false;
             }
@@ -391,52 +452,9 @@ if(isset($_POST['submit'])){
             if (!valido) {
                 event.preventDefault();
             }
-        });
-    }
-    const form = document.getElementById("agg");
-    function validarFormulario(event) {
-        const codigo = document.getElementById("codigo");
-        const nombre = document.getElementById("nombre");
-        const pastor = document.getElementById("pastor");
-        const celular = document.getElementById("celular");
-        let valido = true;
-    
-        if (!codigo.value.trim() || !nombre.value.trim() || !pastor.value.trim() || !celular.value.trim()) {
-            Swal.fire({
-                icon: "error",
-                text: "Todos los campos deben ser diligenciados"
-            });
-            valido = false;
-        
-        } else if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre.value)) {
-            Swal.fire({
-                icon: "error",
-                text: "El nombre del distrito solo puede contener letras"
-            });
-            valido = false;
-        
-        } else if (pastor.value.length < 6 || !/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(pastor.value)) {
-            Swal.fire({
-                icon: "error",
-                text: "El nombre del pastor solo puede contener letras y minimo 6 caracteres"
-            });
-            valido = false;
-        
-        } else if (!/^\d{10}$/.test(celular.value)) {
-            Swal.fire({
-                icon: "error",
-                text: "El número debe tener exactamente 10 digitos"
-            });
-            valido = false;
         }
-    
-        if (!valido) {
-            event.preventDefault();
-        }
-    }
-    form.addEventListener("submit", validarFormulario);
+        form.addEventListener("submit", validarFormulario);
     });
 </script>
 </body>
 </html>
-

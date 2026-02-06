@@ -1,0 +1,250 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container_grid {
+    display: grid;
+    grid-template-areas: "sidebar main";
+    grid-template-columns: auto 1fr;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.grid_contenido_plantilla {
+    grid-area: main;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2%;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+    gap: 20px;
+    align-content: flex-start;
+}
+
+.aside_barra {
+    grid-area: sidebar;
+}
+
+.header_propiedad {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    min-height: fit-content;
+}
+
+.info_propiedad {
+    display: flex;
+    gap: 30px;
+    flex: 1;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px 40px;
+}
+
+.items p {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    align-items: center;
+}
+
+input,
+select,
+textarea {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    font-family: inherit;
+}
+
+.icono_prop {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.texto_prop {
+    color: #167a93;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.btns {
+    background-color: #167a93;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+.btns:hover {
+    background-color: #125f73;
+}
+
+.agg_documento {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+
+/* Cada .grid_documentos ocupa solo el ancho de su card */
+
+.grid_documentos {
+    display: contents;
+}
+
+.card_doc {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 250px;
+    width: calc((100% - 20px) / 5);
+    flex: 0 0 auto;
+}
+
+.card_doc:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.btn_editar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    text-decoration: none;
+}
+
+.btn_editar i {
+    color: #333;
+    transition: color 0.2s;
+}
+
+.btn_editar:hover i {
+    color: #167a93;
+}
+
+.card_header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.card_header img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.card_header div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.card_header span {
+    color: #167a93;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.card_header p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.card_body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card_body p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.card_body strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.card_footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn_icon {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #167a93;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+    padding: 5px;
+}
+
+.btn_icon:hover {
+    transform: scale(1.15);
+    color: #125f73;
+}
+
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+    .card_doc {
+        width: calc((100% - 20px) / 3);
+    }
+}
+
+@media (max-width: 768px) {
+    .card_doc {
+        width: 100%;
+    }
+    .items {
+        grid-template-columns: 1fr;
+    }
+    .header_propiedad {
+        flex-direction: column;
+        gap: 15px;
+    }
+}

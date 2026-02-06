@@ -66,7 +66,7 @@ $distritos = $distritos->fetchAll(PDO::FETCH_ASSOC);
         <div class="home_titulo">
             <div class="info">
                 <span class="nombre">Bienvenid@, <?= $nombre ?></span>
-                <p class="rol">Rol: Administrador</p>
+                <p class="rol">Rol: Usuario</p>
             </div>
             <img src="assets/user_negro.png" class="perfil-img">
         </div>

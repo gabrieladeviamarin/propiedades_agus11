@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container_grid {
+    display: grid;
+    grid-template-areas: "sidebar main";
+    grid-template-columns: auto 1fr;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.grid_contenido_plantilla {
+    grid-area: main;
+    background-color: #f5f5f5;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.aside_barra {
+    grid-area: sidebar;
+}
+
+.home_titulo {
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 100%;
+    font-family: 'Helvetica, Arial, sans-serif';
+    font-size: 20px;
+    gap: 15px;
+}
+
+.perfil-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 2%;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info .nombre {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
+
+.info .rol {
+    font-size: 16px;
+    margin: 0;
+    color: #666;
+}
+
+.scroll_container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 1vw;
+    margin-top: 2vh;
+    margin-left: 4vh;
+    width: 98%;
+    scroll-behavior: smooth;
+}
+
+.card {
+    width: 20vw;
+    height: 12vh;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    flex-shrink: 0;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    font-family: 'Helvetica, Arial, sans-serif';
+    font-size: 90%;
+}
+
+.card:first-child {
+    position: sticky;
+    left: 0;
+    top: 0;
+    width: 10vw;
+    z-index: 10;
+    background-color: #167a93;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    align-items: center;
+    color: white;
+}
+
+.card p {
+    font-size: 160%;
+    margin-bottom: 4px;
+}
+
+.card h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.card span {
+    font-size: 16px;
+    font-weight: bold;
+    color: #807f7f;
+}
+
+.graficas {
+    display: grid;
+    grid-template-columns: 50% 40%;
+    gap: 3%;
+    margin-left: 2%;
+    width: 100%;
+    min-height: 348px;
+    margin-top: 5vh;
+}
+
+.grafica {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    width: 100%;
+}
