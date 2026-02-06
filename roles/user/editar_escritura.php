@@ -260,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="grid_form">
                 <div class="campo">
                     <label>Nro Matrícula</label>
-                    <input type="number" name="nro_matricula" value="<?= htmlspecialchars($escritura['nro_matricula']) ?>" readonly>
+                    <input type="text" name="nro_matricula" value="<?= htmlspecialchars($escritura['nro_matricula']) ?>" readonly>
                 </div>
                 <div class="campo">
                     <label>Ficha Catastral</label>

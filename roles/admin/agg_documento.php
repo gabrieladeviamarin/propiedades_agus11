@@ -67,7 +67,7 @@ if (isset($_POST['submit'])){
         }
 
         $query = $con->prepare("INSERT INTO escritura (nro_matricula, ficha_catastral, codigo_contable, valor, valor_contable, valor_contable_lote, valor_contable_build, valor_avaluo, valor_avaluo_lote, valor_avaluo_build, fecha_registro, id_lugar)
-        VALUES ($nro_matricula, '$ficha_catastral', '$codigo', $v_escritura, $v_contable, $v_contable_l, $v_contable_b, $v_avaluo, $v_avaluo_l, $v_avaluo_b, '$fecha_registro', $id_lugar)");
+        VALUES ('$nro_matricula', '$ficha_catastral', '$codigo', $v_escritura, $v_contable, $v_contable_l, $v_contable_b, $v_avaluo, $v_avaluo_l, $v_avaluo_b, '$fecha_registro', $id_lugar)");
         $query->execute();
 
         if (isset($_FILES['escritura']) &&  $_FILES['escritura']['error'] !== UPLOAD_ERR_NO_FILE){
@@ -86,7 +86,7 @@ if (isset($_POST['submit'])){
 
                     if (move_uploaded_file($fileTmpName, $fileDestination)) {
 
-                        $query = $con->prepare("UPDATE escritura SET documento_pdf = '$newFileName' WHERE nro_matricula = $nro_matricula");
+                        $query = $con->prepare("UPDATE escritura SET documento_pdf = '$newFileName' WHERE nro_matricula = '$nro_matricula'");
                         $query->execute();
 
                         echo "<!DOCTYPE html>

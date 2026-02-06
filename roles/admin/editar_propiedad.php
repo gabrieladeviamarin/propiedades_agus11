@@ -252,7 +252,7 @@
         <!----------------      ------------------------------ SI ESCRITURA ------------------------------------------------>
                                     <div class="mb-3 escritura">
                                         <label for="nro_matricula" class="form-label">Numero de Matricula</label>
-                                        <input type="number" class="form-control" id="nro_matricula" name="nro_matricula" >
+                                        <input type="text" class="form-control" id="nro_matricula" name="nro_matricula" >
                                     </div>
                                     <div class="mb-3 escritura">
                                         <label for="ficha_catastral" class="form-label">Ficha Catastral</label>
